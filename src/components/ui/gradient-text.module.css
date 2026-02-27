@@ -1,0 +1,23 @@
+.gradient {
+	background: linear-gradient(
+		135deg,
+		var(--color-accent-primary) 0%,
+		var(--color-accent-secondary) 50%,
+		var(--color-accent-primary) 100%
+	);
+	background-size: 200% auto;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+	animation: gradientShift 5s ease-in-out infinite;
+}
+
+@keyframes gradientShift {
+	0%,
+	100% {
+		background-position: 0% center;
+	}
+	50% {
+		background-position: 100% center;
+	}
+}

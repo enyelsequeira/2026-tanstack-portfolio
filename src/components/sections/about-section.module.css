@@ -1,0 +1,156 @@
+.section {
+	margin-bottom: 120px;
+}
+
+.grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 2px;
+}
+
+.card {
+	background: var(--color-surface);
+	padding: 32px;
+	border: 1px solid var(--color-border);
+	transition: border-color 0.2s ease;
+}
+
+.card:hover {
+	border-color: rgba(148, 163, 184, 0.25);
+}
+
+.cardTag {
+	font-family: var(--mantine-font-family-monospace);
+	font-size: 10px;
+	letter-spacing: 0.2em;
+	text-transform: uppercase;
+	color: var(--color-accent-primary);
+	margin-bottom: 16px;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.dot {
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	display: inline-block;
+}
+
+.cardTitle {
+	font-family: var(--mantine-font-family-headings);
+	font-size: 22px;
+	font-weight: 400;
+	margin-bottom: 12px;
+	color: var(--color-text-primary);
+}
+
+.cardText {
+	font-size: 14px;
+	color: var(--color-text-muted);
+	line-height: 1.7;
+}
+
+.bio {
+	margin-bottom: 80px;
+}
+
+.bioGrid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 60px;
+	align-items: start;
+}
+
+.bioText {
+	font-size: 16px;
+	color: var(--color-text-muted);
+	line-height: 1.8;
+}
+
+.bioText p {
+	margin-bottom: 20px;
+}
+
+.skillGroups {
+	display: flex;
+	flex-direction: column;
+	gap: 28px;
+}
+
+.skillGroupLabel {
+	font-family: var(--mantine-font-family-monospace);
+	font-size: 10px;
+	letter-spacing: 0.2em;
+	text-transform: uppercase;
+	color: var(--color-accent-secondary);
+	margin-bottom: 12px;
+}
+
+.skillTags {
+	display: flex;
+	gap: 8px;
+	flex-wrap: wrap;
+}
+
+.experienceList {
+	margin-top: 60px;
+}
+
+.experienceItem {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	gap: 20px;
+	padding: 20px 0;
+	border-bottom: 1px solid var(--color-border);
+	align-items: center;
+}
+
+.experienceItem:first-child {
+	border-top: 1px solid var(--color-border);
+}
+
+.expCompany {
+	font-size: 15px;
+	color: var(--color-text-primary);
+	font-weight: 400;
+	text-decoration: none;
+	transition: color 0.15s ease;
+}
+
+.expCompany:hover {
+	color: var(--color-accent-primary);
+}
+
+.expRole {
+	font-size: 14px;
+	color: var(--color-text-muted);
+}
+
+.expPeriod {
+	font-family: var(--mantine-font-family-monospace);
+	font-size: 12px;
+	color: var(--color-text-muted);
+	text-align: right;
+}
+
+@media (max-width: 768px) {
+	.grid {
+		grid-template-columns: 1fr;
+	}
+
+	.bioGrid {
+		grid-template-columns: 1fr;
+		gap: 40px;
+	}
+
+	.experienceItem {
+		grid-template-columns: 1fr;
+		gap: 4px;
+	}
+
+	.expPeriod {
+		text-align: left;
+	}
+}

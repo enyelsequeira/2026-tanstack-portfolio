@@ -1,0 +1,28 @@
+.tag {
+	padding: 6px 14px;
+	border-radius: 2px;
+	font-family: var(--mantine-font-family-monospace);
+	font-size: 11px;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	display: inline-flex;
+	align-items: center;
+}
+
+.tag[data-variant="blue"] {
+	background: rgba(37, 99, 235, 0.15);
+	color: #60a5fa;
+	border: 1px solid rgba(37, 99, 235, 0.3);
+}
+
+.tag[data-variant="indigo"] {
+	background: rgba(99, 102, 241, 0.15);
+	color: #a5b4fc;
+	border: 1px solid rgba(99, 102, 241, 0.3);
+}
+
+.tag[data-variant="slate"] {
+	background: rgba(148, 163, 184, 0.08);
+	color: var(--color-text-muted);
+	border: 1px solid var(--color-border);
+}

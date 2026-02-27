@@ -1,0 +1,32 @@
+.card {
+	background: var(--color-surface);
+	border: 1px solid var(--color-border);
+	padding: 28px;
+	transition:
+		border-color 0.2s ease,
+		transform 0.2s ease;
+}
+
+.card:hover {
+	border-color: rgba(148, 163, 184, 0.25);
+	transform: translateY(-2px);
+}
+
+.number {
+	font-family: var(--mantine-font-family-headings);
+	font-size: 42px;
+	color: var(--color-text-primary);
+	line-height: 1;
+	margin-bottom: 6px;
+}
+
+.suffix {
+	color: var(--color-accent-primary);
+	font-style: italic;
+}
+
+.label {
+	font-size: 13px;
+	color: var(--color-text-muted);
+	letter-spacing: 0.03em;
+}

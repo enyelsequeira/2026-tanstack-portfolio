@@ -1,0 +1,135 @@
+.hero {
+	padding-top: 140px;
+	padding-bottom: 120px;
+	position: relative;
+}
+
+.eyebrow {
+	font-family: var(--mantine-font-family-monospace);
+	font-size: 12px;
+	color: var(--color-accent-primary);
+	letter-spacing: 0.15em;
+	text-transform: uppercase;
+	margin-bottom: 24px;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.eyebrow::before {
+	content: "";
+	width: 24px;
+	height: 1px;
+	background: var(--color-accent-primary);
+}
+
+.heading {
+	font-family: var(--mantine-font-family-headings);
+	font-size: clamp(52px, 8vw, 96px);
+	font-weight: 400;
+	line-height: 1;
+	letter-spacing: -0.02em;
+	color: var(--color-text-primary);
+	margin-bottom: 8px;
+}
+
+.sub {
+	font-size: 18px;
+	color: var(--color-text-muted);
+	max-width: 520px;
+	line-height: 1.7;
+	margin-top: 28px;
+	margin-bottom: 48px;
+}
+
+.actions {
+	display: flex;
+	gap: 16px;
+	flex-wrap: wrap;
+	margin-bottom: 32px;
+}
+
+.btnPrimary {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 14px 28px;
+	border-radius: 4px;
+	font-family: var(--mantine-font-family);
+	font-size: 14px;
+	font-weight: 500;
+	letter-spacing: 0.02em;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	text-decoration: none;
+	border: none;
+	background: var(--color-accent-primary);
+	color: #fff;
+}
+
+.btnPrimary:hover {
+	background: #1d4ed8;
+	transform: translateY(-1px);
+	box-shadow: 0 8px 24px rgba(37, 99, 235, 0.35);
+}
+
+.btnGhost {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 14px 28px;
+	border-radius: 4px;
+	font-family: var(--mantine-font-family);
+	font-size: 14px;
+	font-weight: 500;
+	letter-spacing: 0.02em;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	text-decoration: none;
+	background: transparent;
+	color: var(--color-text-primary);
+	border: 1px solid var(--color-border);
+}
+
+.btnGhost:hover {
+	border-color: var(--color-text-muted);
+	background: rgba(148, 163, 184, 0.06);
+}
+
+.tags {
+	display: flex;
+	gap: 8px;
+	flex-wrap: wrap;
+}
+
+/* Staggered fade-in animation */
+.hero > * {
+	animation: fadeUp 0.6s ease both;
+}
+
+.hero > *:nth-child(1) {
+	animation-delay: 0.1s;
+}
+.hero > *:nth-child(2) {
+	animation-delay: 0.2s;
+}
+.hero > *:nth-child(3) {
+	animation-delay: 0.3s;
+}
+.hero > *:nth-child(4) {
+	animation-delay: 0.4s;
+}
+.hero > *:nth-child(5) {
+	animation-delay: 0.5s;
+}
+
+@keyframes fadeUp {
+	from {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
