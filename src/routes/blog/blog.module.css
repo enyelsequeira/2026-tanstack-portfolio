@@ -1,0 +1,194 @@
+.page {
+	padding-top: 140px;
+	padding-bottom: 120px;
+}
+
+.header {
+	margin-bottom: 64px;
+}
+
+.title {
+	font-family: var(--mantine-font-family-headings);
+	font-size: clamp(36px, 5vw, 52px);
+	font-weight: 400;
+	line-height: 1.1;
+	letter-spacing: -0.02em;
+	color: var(--color-text-primary);
+	margin-bottom: 16px;
+}
+
+.subtitle {
+	font-size: 16px;
+	color: var(--color-text-muted);
+	line-height: 1.7;
+	max-width: 520px;
+}
+
+.list {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
+/* Post card */
+.card {
+	display: block;
+	background: var(--color-surface);
+	border: 1px solid var(--color-border);
+	padding: 36px 40px;
+	position: relative;
+	overflow: hidden;
+	cursor: pointer;
+	text-decoration: none;
+	transition:
+		border-color 0.2s ease,
+		transform 0.25s ease,
+		box-shadow 0.25s ease;
+}
+
+.card:hover {
+	border-color: rgba(99, 102, 241, 0.4);
+	transform: translateY(-2px);
+	box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.card::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 1px;
+	background: linear-gradient(
+		90deg,
+		transparent,
+		var(--color-accent-secondary),
+		transparent
+	);
+	opacity: 0;
+	transition: opacity 0.3s ease;
+}
+
+.card:hover::before {
+	opacity: 1;
+}
+
+.date {
+	font-family: var(--mantine-font-family-monospace);
+	font-size: 11px;
+	color: var(--color-text-muted);
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	margin-bottom: 14px;
+}
+
+.postTitle {
+	font-family: var(--mantine-font-family-headings);
+	font-size: 22px;
+	font-weight: 400;
+	color: var(--color-text-primary);
+	line-height: 1.2;
+	margin-bottom: 10px;
+}
+
+.summary {
+	font-size: 14px;
+	color: var(--color-text-muted);
+	line-height: 1.7;
+	margin-bottom: 20px;
+}
+
+.tags {
+	display: flex;
+	gap: 8px;
+	flex-wrap: wrap;
+}
+
+.readMore {
+	font-family: var(--mantine-font-family-monospace);
+	font-size: 11px;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--color-accent-primary);
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-top: 24px;
+}
+
+.arrow {
+	transition: transform 0.2s ease;
+}
+
+.card:hover .arrow {
+	transform: translateX(4px);
+}
+
+/* Empty state */
+.empty {
+	padding: 80px 40px;
+	text-align: center;
+	border: 1px solid var(--color-border);
+	background: var(--color-surface);
+}
+
+.emptyTitle {
+	font-family: var(--mantine-font-family-headings);
+	font-size: 24px;
+	font-weight: 400;
+	color: var(--color-text-primary);
+	margin-bottom: 12px;
+}
+
+.emptyText {
+	font-size: 14px;
+	color: var(--color-text-muted);
+	line-height: 1.7;
+}
+
+/* Staggered fade-in for cards */
+.list > *:nth-child(1) {
+	animation: fadeUp 0.6s ease 0.1s both;
+}
+.list > *:nth-child(2) {
+	animation: fadeUp 0.6s ease 0.2s both;
+}
+.list > *:nth-child(3) {
+	animation: fadeUp 0.6s ease 0.3s both;
+}
+.list > *:nth-child(4) {
+	animation: fadeUp 0.6s ease 0.4s both;
+}
+.list > *:nth-child(5) {
+	animation: fadeUp 0.6s ease 0.5s both;
+}
+.list > *:nth-child(6) {
+	animation: fadeUp 0.6s ease 0.6s both;
+}
+.list > *:nth-child(7) {
+	animation: fadeUp 0.6s ease 0.7s both;
+}
+.list > *:nth-child(8) {
+	animation: fadeUp 0.6s ease 0.8s both;
+}
+
+@keyframes fadeUp {
+	from {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@media (max-width: 768px) {
+	.card {
+		padding: 28px 20px;
+	}
+
+	.header {
+		margin-bottom: 48px;
+	}
+}

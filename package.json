@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@cloudflare/vite-plugin": "^1.13.8",
+    "@content-collections/markdown": "^0.1.4",
     "@convex-dev/react-query": "0.1.0",
     "@mantine/core": "^8.3.15",
     "@mantine/hooks": "^8.3.15",
@@ -31,10 +32,12 @@
     "convex": "^1.27.3",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "zod": "^4.1.11"
+    "rehype-highlight": "^7.0.2"
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.4",
+    "@content-collections/core": "^0.14.2",
+    "@content-collections/vite": "^0.2.9",
     "@tanstack/devtools-vite": "^0.3.11",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/react": "^16.2.0",
@@ -50,6 +53,7 @@
     "vite": "^7.1.7",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.0.5",
-    "wrangler": "^4.40.3"
+    "wrangler": "^4.40.3",
+    "zod": "^4.1.11"
   }
 }

@@ -1,12 +1,13 @@
-import { Box, Burger, Drawer, Stack } from "@mantine/core";
+import { Box, Burger, Drawer, Flex, Stack } from "@mantine/core";
 import { useDisclosure, useWindowScroll } from "@mantine/hooks";
+import { Link } from "@tanstack/react-router";
 import classes from "./nav-bar.module.css";
 
 const NAV_ITEMS = [
-	{ label: "Work", href: "#work" },
-	{ label: "About", href: "#about" },
-	{ label: "Experience", href: "#experience" },
-	{ label: "Contact", href: "#contact" },
+	{ label: "Work", hash: "work" },
+	{ label: "About", hash: "about" },
+	{ label: "Experience", hash: "experience" },
+	{ label: "Contact", hash: "contact" },
 ];
 
 export function NavBar() {
@@ -21,7 +22,7 @@ export function NavBar() {
 				data-scrolled={scroll.y > 50 || undefined}
 			>
 				<div className={classes.inner}>
-					<a href="#top" className={classes.logo}>
+					<Link to="/" className={classes.logo}>
 						<img
 							src="/enyel-logo.png"
 							alt="Enyel Sequeira"
@@ -30,19 +31,29 @@ export function NavBar() {
 						<span className={classes.logoText}>
 							ES<span className={classes.logoAccent}>.</span>
 						</span>
-					</a>
+					</Link>
 					<ul className={classes.links}>
 						{NAV_ITEMS.map((item) => (
-							<li key={item.href}>
-								<a href={item.href} className={classes.link}>
+							<li key={item.hash}>
+								<Link
+									to="/"
+									hash={item.hash}
+									className={classes.link}
+								>
 									{item.label}
-								</a>
+								</Link>
 							</li>
 						))}
 					</ul>
-					<a href="#contact" className={classes.cta}>
-						Hire me
-					</a>
+					<Flex gap="md">
+						<Link to="/blog" className={classes.ctaGhost}>
+							Blog
+						</Link>
+						<Link to="/" hash="contact" className={classes.cta}>
+							Hire me
+						</Link>
+					</Flex>
+
 					<Burger
 						opened={opened}
 						onClick={toggle}
@@ -68,25 +79,34 @@ export function NavBar() {
 			>
 				<Stack gap="xl">
 					{NAV_ITEMS.map((item) => (
-						<a
-							key={item.href}
-							href={item.href}
+						<Link
+							key={item.hash}
+							to="/"
+							hash={item.hash}
 							onClick={close}
 							className={classes.link}
 							style={{ fontSize: 24 }}
 						>
 							{item.label}
-						</a>
+						</Link>
 					))}
-					{/* biome-ignore lint/a11y/useValidAnchor: navigation link with onClick for drawer close */}
-					<a
-						href="#contact"
+					<Link
+						to="/blog"
+						onClick={close}
+						className={classes.ctaGhost}
+						style={{ textAlign: "center" }}
+					>
+						Blog
+					</Link>
+					<Link
+						to="/"
+						hash="contact"
 						onClick={close}
 						className={classes.cta}
 						style={{ textAlign: "center" }}
 					>
 						Hire me
-					</a>
+					</Link>
 				</Stack>
 			</Drawer>
 		</>

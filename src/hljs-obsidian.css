@@ -1,0 +1,119 @@
+/*
+ * highlight.js theme — matched to the obsidian design system
+ * Colors derived from brand / obsidian palettes and CSS variables
+ */
+
+.hljs {
+	color: #cbd5e1; /* obsidian.2 — slate-200 base text */
+}
+
+/* ── Keywords, tags ── */
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-built_in,
+.hljs-name {
+	color: #818cf8; /* brand.4 — indigo */
+}
+
+/* ── Strings, values ── */
+.hljs-string,
+.hljs-addition,
+.hljs-attribute {
+	color: #6ee7b7; /* emerald-300 — green for strings */
+}
+
+/* ── Numbers, literals ── */
+.hljs-number,
+.hljs-literal,
+.hljs-selector-id {
+	color: #f9a8d4; /* pink-300 — warm accent for numbers */
+}
+
+/* ── Types, classes ── */
+.hljs-type,
+.hljs-title,
+.hljs-title.class_,
+.hljs-title.function_ {
+	color: #60a5fa; /* blue-400 — matches accent-primary family */
+}
+
+/* ── Function calls, methods ── */
+.hljs-title.function_.invoke__ {
+	color: #60a5fa;
+}
+
+/* ── Variables, params ── */
+.hljs-variable,
+.hljs-params,
+.hljs-template-variable {
+	color: #e2e8f0; /* obsidian.1 — almost white */
+}
+
+/* ── Comments ── */
+.hljs-comment,
+.hljs-quote {
+	color: #475569; /* obsidian.4 — dim slate */
+	font-style: italic;
+}
+
+/* ── Meta, directives ── */
+.hljs-meta,
+.hljs-meta .hljs-keyword {
+	color: #94a3b8; /* obsidian.3 — text-muted */
+}
+
+/* ── Regexp, special ── */
+.hljs-regexp {
+	color: #fbbf24; /* amber-400 */
+}
+
+/* ── Symbols, bullets ── */
+.hljs-symbol,
+.hljs-bullet {
+	color: #a5b4fc; /* brand.3 — light indigo */
+}
+
+/* ── Deletion ── */
+.hljs-deletion {
+	color: #f87171; /* red-400 */
+}
+
+/* ── Section headers ── */
+.hljs-section {
+	color: #6366f1; /* brand.5 — accent-secondary */
+	font-weight: 600;
+}
+
+/* ── Emphasis ── */
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: 600;
+}
+
+/* ── Links / Anchors ── */
+.hljs-link {
+	color: #2563eb; /* accent-primary */
+	text-decoration: underline;
+}
+
+/* ── Attributes (HTML/XML) ── */
+.hljs-attr {
+	color: #a5b4fc; /* brand.3 — light indigo */
+}
+
+/* ── Selector, tag names (CSS) ── */
+.hljs-selector-class {
+	color: #6ee7b7;
+}
+
+.hljs-selector-pseudo {
+	color: #818cf8;
+}
+
+/* ── Property (CSS) ── */
+.hljs-property {
+	color: #60a5fa;
+}
