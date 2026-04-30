@@ -1,0 +1,33 @@
+.cursor {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 24px;
+	height: 24px;
+	border-radius: 50%;
+	background: var(--color-accent-primary);
+	mix-blend-mode: difference;
+	pointer-events: none;
+	z-index: 9999;
+	transform: translate3d(-50%, -50%, 0);
+	will-change: transform, width, height;
+	transition:
+		width 0.25s ease,
+		height 0.25s ease;
+}
+
+.cursor[data-state="link"] {
+	width: 8px;
+	height: 8px;
+}
+
+.cursor[data-state="card"] {
+	width: 6px;
+	height: 6px;
+}
+
+@media (max-width: 768px), (prefers-reduced-motion: reduce) {
+	.cursor {
+		display: none;
+	}
+}

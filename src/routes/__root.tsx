@@ -13,6 +13,7 @@ import ConvexProvider from "../integrations/convex/provider";
 import appCss from "../styles.css?url";
 
 import "@/lib/animations/register-plugins";
+import { MagneticCursor } from "@/lib/animations/magnetic-cursor";
 
 const theme = createTheme({
 	primaryColor: "brand",
@@ -111,6 +112,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 					forceColorScheme="dark"
 					cssVariablesResolver={cssVariablesResolver}
 				>
+					<MagneticCursor />
 					<ConvexProvider>{children}</ConvexProvider>
 					<Scripts />
 				</MantineProvider>
