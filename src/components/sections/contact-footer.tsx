@@ -49,73 +49,87 @@ export function ContactFooter() {
 			const reduced = window.matchMedia(
 				"(max-width: 768px), (prefers-reduced-motion: reduce)",
 			).matches;
-
 			const socialLinks = socials
 				? (Array.from(socials.children) as HTMLElement[])
 				: [];
 
-			if (reduced) {
-				gsap.from(
-					[accentBar, heading, sub, cta, ...socialLinks].filter(Boolean),
-					{
-						opacity: 0,
-						y: 12,
-						duration: 0.4,
-						ease: "power2.out",
-						stagger: 0.05,
-						scrollTrigger: { trigger: root, start: "top 90%", once: true },
-					},
-				);
-				return;
-			}
-
-			const tl = gsap.timeline({
-				scrollTrigger: { trigger: root, start: "top 80%", once: true },
-			});
+			const trigger = { trigger: root, start: "top 80%", once: true };
 
 			if (accentBar) {
-				tl.from(accentBar, {
-					scaleX: 0,
-					duration: 0.8,
-					ease: "power3.out",
-				});
+				gsap.fromTo(
+					accentBar,
+					{ scaleX: 0, immediateRender: false },
+					{
+						scaleX: 1,
+						duration: reduced ? 0.5 : 0.8,
+						ease: "power3.out",
+						scrollTrigger: trigger,
+					},
+				);
 			}
 			if (heading) {
-				tl.from(
+				gsap.fromTo(
 					heading,
-					{ opacity: 0, y: 16, duration: 0.5, ease: "power3.out" },
-					"-=0.4",
+					{ opacity: 0, y: 16, immediateRender: false },
+					{
+						opacity: 1,
+						y: 0,
+						duration: 0.5,
+						ease: "power3.out",
+						delay: 0.2,
+						scrollTrigger: trigger,
+						clearProps: "transform,opacity",
+					},
 				);
 			}
 			if (sub) {
-				tl.from(
+				gsap.fromTo(
 					sub,
-					{ opacity: 0, y: 12, duration: 0.5, ease: "power3.out" },
-					"-=0.3",
+					{ opacity: 0, y: 12, immediateRender: false },
+					{
+						opacity: 1,
+						y: 0,
+						duration: 0.5,
+						ease: "power3.out",
+						delay: 0.35,
+						scrollTrigger: trigger,
+						clearProps: "transform,opacity",
+					},
 				);
 			}
 			if (cta) {
-				tl.from(
+				gsap.fromTo(
 					cta,
-					{ opacity: 0, y: 12, duration: 0.4, ease: "power3.out" },
-					"-=0.3",
+					{ opacity: 0, y: 12, immediateRender: false },
+					{
+						opacity: 1,
+						y: 0,
+						duration: 0.4,
+						ease: "power3.out",
+						delay: 0.5,
+						scrollTrigger: trigger,
+						clearProps: "transform,opacity",
+					},
 				);
 			}
 			if (socialLinks.length > 0) {
-				tl.from(
+				gsap.fromTo(
 					socialLinks,
+					{ opacity: 0, y: 8, immediateRender: false },
 					{
-						opacity: 0,
-						y: 8,
+						opacity: 1,
+						y: 0,
 						duration: 0.3,
 						ease: "power2.out",
 						stagger: 0.05,
+						delay: 0.65,
+						scrollTrigger: trigger,
+						clearProps: "transform,opacity",
 					},
-					"-=0.2",
 				);
 			}
 
-			if (cta) {
+			if (!reduced && cta) {
 				const xTo = gsap.quickTo(cta, "x", {
 					duration: 0.3,
 					ease: "power3.out",

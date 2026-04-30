@@ -33,11 +33,11 @@ export function ProjectCard({ project }: ProjectCardProps) {
 			).matches;
 			if (reduced) return;
 
-			const rotXTo = gsap.quickTo(card, "rotateX", {
+			const rotXTo = gsap.quickTo(card, "rotationX", {
 				duration: 0.4,
 				ease: "power3.out",
 			});
-			const rotYTo = gsap.quickTo(card, "rotateY", {
+			const rotYTo = gsap.quickTo(card, "rotationY", {
 				duration: 0.4,
 				ease: "power3.out",
 			});
