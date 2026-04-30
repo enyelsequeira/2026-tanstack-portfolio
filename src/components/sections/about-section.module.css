@@ -2,60 +2,6 @@
 	margin-bottom: 120px;
 }
 
-.grid {
-	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-	gap: 2px;
-}
-
-.card {
-	background: var(--color-surface);
-	padding: 32px;
-	border: 1px solid var(--color-border);
-	transition: border-color 0.2s ease;
-}
-
-.card:hover {
-	border-color: rgba(148, 163, 184, 0.25);
-}
-
-.cardTag {
-	font-family: var(--mantine-font-family-monospace);
-	font-size: 10px;
-	letter-spacing: 0.2em;
-	text-transform: uppercase;
-	color: var(--color-accent-primary);
-	margin-bottom: 16px;
-	display: flex;
-	align-items: center;
-	gap: 8px;
-}
-
-.dot {
-	width: 10px;
-	height: 10px;
-	border-radius: 50%;
-	display: inline-block;
-}
-
-.cardTitle {
-	font-family: var(--mantine-font-family-headings);
-	font-size: 22px;
-	font-weight: 400;
-	margin-bottom: 12px;
-	color: var(--color-text-primary);
-}
-
-.cardText {
-	font-size: 14px;
-	color: var(--color-text-muted);
-	line-height: 1.7;
-}
-
-.bio {
-	margin-bottom: 80px;
-}
-
 .bioGrid {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
@@ -136,10 +82,6 @@
 }
 
 @media (max-width: 768px) {
-	.grid {
-		grid-template-columns: 1fr;
-	}
-
 	.bioGrid {
 		grid-template-columns: 1fr;
 		gap: 40px;

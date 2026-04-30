@@ -46,7 +46,7 @@ Mantine v8 is the component library. The custom theme (brand colors, primary col
 
 ### Environment Variables
 
-Validated via `@t3-oss/env-core` + Zod in `src/env.ts`. Client-side vars must be prefixed with `VITE_`. Runtime env comes from `import.meta.env`. Required env: `VITE_CONVEX_URL`.
+Client-side vars must be prefixed with `VITE_`. Runtime env comes from `import.meta.env`. Required env: `VITE_CONVEX_URL`.
 
 ### Path Aliases
 

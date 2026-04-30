@@ -6,6 +6,7 @@
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
 	gap: 2px;
+	perspective: 1000px;
 }
 
 @media (max-width: 768px) {

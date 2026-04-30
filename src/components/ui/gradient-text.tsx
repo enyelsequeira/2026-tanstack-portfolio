@@ -3,11 +3,18 @@ import classes from "./gradient-text.module.css";
 
 type GradientTextProps = TextProps & {
 	children: React.ReactNode;
+	ref?: React.Ref<HTMLSpanElement>;
 };
 
-export function GradientText({ children, ...props }: GradientTextProps) {
+export function GradientText({ children, ref, ...props }: GradientTextProps) {
 	return (
-		<Text component="span" inherit className={classes.gradient} {...props}>
+		<Text
+			ref={ref}
+			component="span"
+			inherit
+			className={classes.gradient}
+			{...props}
+		>
 			{children}
 		</Text>
 	);

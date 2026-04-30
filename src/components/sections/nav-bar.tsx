@@ -1,6 +1,9 @@
+import { useGSAP } from "@gsap/react";
 import { Box, Burger, Drawer, Flex, Stack } from "@mantine/core";
 import { useDisclosure, useWindowScroll } from "@mantine/hooks";
 import { Link } from "@tanstack/react-router";
+import { gsap } from "gsap";
+import { useRef } from "react";
 import classes from "./nav-bar.module.css";
 
 const NAV_ITEMS = [
@@ -13,10 +16,24 @@ const NAV_ITEMS = [
 export function NavBar() {
 	const [scroll] = useWindowScroll();
 	const [opened, { toggle, close }] = useDisclosure(false);
+	const navRef = useRef<HTMLElement>(null);
+
+	useGSAP(
+		() => {
+			gsap.from(navRef.current, {
+				y: -20,
+				opacity: 0,
+				duration: 0.4,
+				ease: "power3.out",
+			});
+		},
+		{ scope: navRef },
+	);
 
 	return (
 		<>
 			<Box
+				ref={navRef}
 				component="nav"
 				className={classes.navbar}
 				data-scrolled={scroll.y > 50 || undefined}
@@ -35,11 +52,7 @@ export function NavBar() {
 					<ul className={classes.links}>
 						{NAV_ITEMS.map((item) => (
 							<li key={item.hash}>
-								<Link
-									to="/"
-									hash={item.hash}
-									className={classes.link}
-								>
+								<Link to="/" hash={item.hash} className={classes.link}>
 									{item.label}
 								</Link>
 							</li>

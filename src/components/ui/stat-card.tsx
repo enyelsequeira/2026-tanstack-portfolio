@@ -5,13 +5,14 @@ type StatCardProps = {
 	value: string;
 	suffix: string;
 	label: string;
+	ref?: React.Ref<HTMLDivElement>;
 };
 
-export function StatCard({ value, suffix, label }: StatCardProps) {
+export function StatCard({ value, suffix, label, ref }: StatCardProps) {
 	return (
-		<Box className={classes.card}>
+		<Box ref={ref} className={classes.card}>
 			<div className={classes.number}>
-				{value}
+				<span data-stat-value>{value}</span>
 				<span className={classes.suffix}>{suffix}</span>
 			</div>
 			<div className={classes.label}>{label}</div>

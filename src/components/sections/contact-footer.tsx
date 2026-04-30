@@ -1,9 +1,12 @@
+import { useGSAP } from "@gsap/react";
 import { Container } from "@mantine/core";
 import {
 	IconBrandGithub,
 	IconBrandLinkedin,
 	IconBrandX,
 } from "@tabler/icons-react";
+import { gsap } from "gsap";
+import { useRef } from "react";
 import { SectionWrapper } from "@/components/ui/section-wrapper";
 import classes from "./contact-footer.module.css";
 
@@ -26,27 +29,156 @@ const SOCIALS = [
 ];
 
 export function ContactFooter() {
+	const sectionRef = useRef<HTMLDivElement>(null);
+	const accentBarRef = useRef<HTMLDivElement>(null);
+	const headingRef = useRef<HTMLHeadingElement>(null);
+	const subRef = useRef<HTMLParagraphElement>(null);
+	const ctaRef = useRef<HTMLAnchorElement>(null);
+	const socialsRef = useRef<HTMLDivElement>(null);
+
+	useGSAP(
+		() => {
+			const root = sectionRef.current;
+			const accentBar = accentBarRef.current;
+			const heading = headingRef.current;
+			const sub = subRef.current;
+			const cta = ctaRef.current;
+			const socials = socialsRef.current;
+			if (!root) return;
+
+			const reduced = window.matchMedia(
+				"(max-width: 768px), (prefers-reduced-motion: reduce)",
+			).matches;
+
+			const socialLinks = socials
+				? (Array.from(socials.children) as HTMLElement[])
+				: [];
+
+			if (reduced) {
+				gsap.from(
+					[accentBar, heading, sub, cta, ...socialLinks].filter(Boolean),
+					{
+						opacity: 0,
+						y: 12,
+						duration: 0.4,
+						ease: "power2.out",
+						stagger: 0.05,
+						scrollTrigger: { trigger: root, start: "top 90%", once: true },
+					},
+				);
+				return;
+			}
+
+			const tl = gsap.timeline({
+				scrollTrigger: { trigger: root, start: "top 80%", once: true },
+			});
+
+			if (accentBar) {
+				tl.from(accentBar, {
+					scaleX: 0,
+					duration: 0.8,
+					ease: "power3.out",
+				});
+			}
+			if (heading) {
+				tl.from(
+					heading,
+					{ opacity: 0, y: 16, duration: 0.5, ease: "power3.out" },
+					"-=0.4",
+				);
+			}
+			if (sub) {
+				tl.from(
+					sub,
+					{ opacity: 0, y: 12, duration: 0.5, ease: "power3.out" },
+					"-=0.3",
+				);
+			}
+			if (cta) {
+				tl.from(
+					cta,
+					{ opacity: 0, y: 12, duration: 0.4, ease: "power3.out" },
+					"-=0.3",
+				);
+			}
+			if (socialLinks.length > 0) {
+				tl.from(
+					socialLinks,
+					{
+						opacity: 0,
+						y: 8,
+						duration: 0.3,
+						ease: "power2.out",
+						stagger: 0.05,
+					},
+					"-=0.2",
+				);
+			}
+
+			if (cta) {
+				const xTo = gsap.quickTo(cta, "x", {
+					duration: 0.3,
+					ease: "power3.out",
+				});
+				const yTo = gsap.quickTo(cta, "y", {
+					duration: 0.3,
+					ease: "power3.out",
+				});
+				const onMove = (e: MouseEvent) => {
+					const rect = cta.getBoundingClientRect();
+					const cx = rect.left + rect.width / 2;
+					const cy = rect.top + rect.height / 2;
+					const dx = e.clientX - cx;
+					const dy = e.clientY - cy;
+					const dist = Math.sqrt(dx * dx + dy * dy);
+					if (dist < 120) {
+						const pull = 1 - dist / 120;
+						xTo(dx * 0.2 * pull);
+						yTo(dy * 0.2 * pull);
+					} else {
+						xTo(0);
+						yTo(0);
+					}
+				};
+				const onLeave = () => {
+					xTo(0);
+					yTo(0);
+				};
+				document.addEventListener("mousemove", onMove);
+				cta.addEventListener("mouseleave", onLeave);
+				return () => {
+					document.removeEventListener("mousemove", onMove);
+					cta.removeEventListener("mouseleave", onLeave);
+				};
+			}
+		},
+		{ scope: sectionRef },
+	);
+
 	return (
 		<Container size={1100} px={{ base: 20, sm: 40 }}>
 			{/* biome-ignore lint/correctness/useUniqueElementIds: scroll anchor */}
 			<SectionWrapper id="contact">
-				<div className={classes.section}>
-					<div className={classes.accentBar} />
+				<div ref={sectionRef} className={classes.section}>
+					<div ref={accentBarRef} className={classes.accentBar} />
 					<div className={classes.content}>
-						<h2 className={classes.heading}>Let's work together</h2>
-						<p className={classes.sub}>
+						<h2 ref={headingRef} className={classes.heading}>
+							Let's work together
+						</h2>
+						<p ref={subRef} className={classes.sub}>
 							Open to remote roles and freelance projects. If you have a
 							question or would like to collaborate, get in touch.
 						</p>
 						<div className={classes.actions}>
 							<a
+								ref={ctaRef}
 								href="mailto:enyelsequeira@hotmail.com"
 								className={classes.btnPrimary}
 							>
 								Say Hello →
 							</a>
 						</div>
-						<div className={classes.socials}>
+						<div ref={socialsRef} className={classes.socials}>
 							{SOCIALS.map((social) => (
 								<a
 									key={social.label}
