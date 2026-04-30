@@ -7,7 +7,7 @@ import classes from "./hero-section.module.css";
 export function HeroSection() {
 	return (
 		<Container size={1100} px={{ base: 20, sm: 40 }}>
-			<section className={classes.hero}>
+			<section className={classes.hero} data-anim-gate style={{ opacity: 0 }}>
 				<p className={classes.eyebrow}> Frontend Engineer · Remote</p>
 				<h1 className={classes.heading}>
 					Enyel
