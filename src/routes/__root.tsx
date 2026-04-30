@@ -12,6 +12,8 @@ import ConvexProvider from "../integrations/convex/provider";
 
 import appCss from "../styles.css?url";
 
+import "@/lib/animations/register-plugins";
+
 const theme = createTheme({
 	primaryColor: "brand",
 	primaryShade: 5,
@@ -99,6 +101,9 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 			<head>
 				<HeadContent />
 				<ColorSchemeScript forceColorScheme="dark" />
+				<noscript>
+					<style>{`[data-anim-gate] { opacity: 1 !important; }`}</style>
+				</noscript>
 			</head>
 			<body>
 				<MantineProvider
