@@ -10,6 +10,23 @@ export type TerminalResult = {
 
 const APP_IDS = APPS.map((app) => app.id);
 
+const COMMAND_NAMES = ["help", "whoami", "ls", "open", "clear", "sudo"];
+
+export function suggestCommands(input: string): string[] {
+	if (input === "") return [];
+	if (!input.includes(" ")) {
+		return COMMAND_NAMES.filter(
+			(name) => name.startsWith(input) && name !== input,
+		);
+	}
+	const [cmd, ...args] = input.trim().split(/\s+/);
+	if (cmd === "open" && args.length <= 1) {
+		const partial = args[0] ?? "";
+		return APP_IDS.filter((id) => id.startsWith(partial) && id !== partial);
+	}
+	return [];
+}
+
 export function runCommand(input: string): TerminalResult {
 	const trimmed = input.trim();
 	if (trimmed === "") return { output: [] };

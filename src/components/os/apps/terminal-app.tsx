@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useWindowManager } from "../window-manager";
 import classes from "./terminal-app.module.css";
-import { runCommand } from "./terminal-commands";
+import { runCommand, suggestCommands } from "./terminal-commands";
 
 type HistoryEntry = {
 	id: number;
@@ -23,6 +23,20 @@ export function TerminalApp() {
 	useEffect(() => {
 		scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight });
 	}, [history]);
+
+	const suggestions = suggestCommands(input);
+
+	const acceptSuggestion = (e: React.KeyboardEvent) => {
+		if (e.key !== "Tab") return;
+		e.preventDefault();
+		const first = suggestions[0];
+		if (!first) return;
+		if (!input.includes(" ")) {
+			setInput(`${first} `);
+		} else {
+			setInput(`${input.slice(0, input.indexOf(" ") + 1)}${first}`);
+		}
+	};
 
 	const submit = (e: React.FormEvent) => {
 		e.preventDefault();
@@ -72,12 +86,19 @@ export function TerminalApp() {
 					className={classes.input}
 					value={input}
 					onChange={(e) => setInput(e.target.value)}
+					onKeyDown={acceptSuggestion}
 					spellCheck={false}
 					autoCapitalize="off"
 					autoComplete="off"
 					aria-label="Terminal input"
 				/>
 			</form>
+			{suggestions.length > 0 && (
+				<div className={classes.suggestions} aria-live="polite">
+					{suggestions.join("  ")}
+					<span className={classes.suggestionsHint}> — tab to complete</span>
+				</div>
+			)}
 		</div>
 	);
 }

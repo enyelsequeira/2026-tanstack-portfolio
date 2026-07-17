@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { runCommand } from "./terminal-commands";
+import { runCommand, suggestCommands } from "./terminal-commands";
 
 describe("runCommand", () => {
 	it("returns empty output for blank input", () => {
@@ -39,6 +39,41 @@ describe("runCommand", () => {
 
 	it("open without an argument prints usage", () => {
 		expect(runCommand("open").output[0]).toBe("usage: open <app>");
+	});
+});
+
+describe("suggestCommands", () => {
+	it("returns nothing for empty input", () => {
+		expect(suggestCommands("")).toEqual([]);
+	});
+
+	it("suggests matching command names for a partial first word", () => {
+		expect(suggestCommands("he")).toEqual(["help"]);
+		expect(suggestCommands("o")).toEqual(["open"]);
+	});
+
+	it("excludes an exact command match", () => {
+		expect(suggestCommands("help")).toEqual([]);
+	});
+
+	it("suggests all apps after `open `", () => {
+		expect(suggestCommands("open ")).toEqual([
+			"about",
+			"projects",
+			"blog",
+			"contact",
+			"terminal",
+		]);
+	});
+
+	it("suggests matching apps for a partial argument", () => {
+		expect(suggestCommands("open b")).toEqual(["blog"]);
+	});
+
+	it("returns nothing for unknown prefixes or extra arguments", () => {
+		expect(suggestCommands("x")).toEqual([]);
+		expect(suggestCommands("open blog extra")).toEqual([]);
+		expect(suggestCommands("ls a")).toEqual([]);
 	});
 
 	it("clear returns a clear action", () => {

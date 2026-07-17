@@ -38,3 +38,15 @@
 	font-size: inherit;
 	caret-color: var(--color-accent-primary);
 }
+
+.suggestions {
+	margin-top: 2px;
+	color: var(--color-text-muted);
+	opacity: 0.75;
+	font-size: 11.5px;
+}
+
+.suggestionsHint {
+	opacity: 0.6;
+	font-style: italic;
+}
