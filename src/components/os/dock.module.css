@@ -1,0 +1,53 @@
+.dock {
+	position: fixed;
+	bottom: 16px;
+	left: 50%;
+	translate: -50% 0;
+	display: flex;
+	align-items: flex-end;
+	gap: 10px;
+	padding: 10px 14px;
+	background: var(--glass-bg);
+	backdrop-filter: var(--glass-blur);
+	-webkit-backdrop-filter: var(--glass-blur);
+	border: 1px solid var(--glass-border);
+	border-top-color: var(--glass-highlight);
+	border-radius: var(--glass-radius-lg);
+	box-shadow: var(--glass-shadow);
+	z-index: 5000;
+}
+
+.icon {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 48px;
+	height: 48px;
+	border: 1px solid var(--color-border);
+	border-radius: 14px;
+	background: rgba(255, 255, 255, 0.05);
+	color: var(--color-text-primary);
+	cursor: pointer;
+	transform-origin: bottom center;
+}
+
+.icon:hover {
+	color: var(--color-accent-secondary);
+}
+
+.dot {
+	position: absolute;
+	bottom: -7px;
+	left: 50%;
+	translate: -50% 0;
+	width: 4px;
+	height: 4px;
+	border-radius: 50%;
+	background: var(--color-text-muted);
+	opacity: 0;
+}
+
+.icon[data-open] .dot {
+	opacity: 1;
+}
