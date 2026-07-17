@@ -1,0 +1,135 @@
+.app {
+	padding: 24px 28px 32px;
+	color: var(--color-text-primary);
+	font-size: 14px;
+	line-height: 1.7;
+}
+
+.header {
+	margin-bottom: 20px;
+}
+
+.name {
+	font-family: "DM Serif Display", serif;
+	font-size: 28px;
+	font-weight: 400;
+	margin: 0;
+}
+
+.role {
+	color: var(--color-text-muted);
+	font-family: "DM Mono", monospace;
+	font-size: 12px;
+	margin: 4px 0 0;
+}
+
+.section {
+	margin-bottom: 24px;
+}
+
+.section p {
+	margin: 0 0 12px;
+	color: var(--color-text-muted);
+}
+
+.sectionTitle {
+	font-family: "DM Mono", monospace;
+	font-size: 11px;
+	font-weight: 500;
+	text-transform: uppercase;
+	letter-spacing: 0.12em;
+	color: var(--color-accent-secondary);
+	margin: 0 0 12px;
+}
+
+.statsGrid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+	gap: 12px;
+}
+
+.stat {
+	display: flex;
+	flex-direction: column;
+	padding: 12px;
+	border: 1px solid var(--color-border);
+	border-radius: 10px;
+	background: rgba(255, 255, 255, 0.03);
+}
+
+.statValue {
+	font-family: "DM Serif Display", serif;
+	font-size: 22px;
+}
+
+.statLabel {
+	color: var(--color-text-muted);
+	font-size: 11px;
+}
+
+.expList {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.expItem {
+	display: grid;
+	grid-template-columns: 1fr auto;
+	gap: 2px 12px;
+}
+
+.expItem a {
+	color: var(--color-text-primary);
+	text-decoration: none;
+	font-weight: 500;
+}
+
+.expItem a:hover {
+	color: var(--color-accent-primary);
+}
+
+.expRole {
+	grid-column: 1;
+	color: var(--color-text-muted);
+	font-size: 12px;
+}
+
+.expPeriod {
+	grid-column: 2;
+	grid-row: 1;
+	color: var(--color-text-muted);
+	font-family: "DM Mono", monospace;
+	font-size: 11px;
+}
+
+.skillGroup {
+	display: flex;
+	align-items: baseline;
+	gap: 12px;
+	margin-bottom: 8px;
+}
+
+.skillLabel {
+	min-width: 90px;
+	font-family: "DM Mono", monospace;
+	font-size: 11px;
+	color: var(--color-text-muted);
+}
+
+.skillTags {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+}
+
+.skillTag {
+	font-size: 11px;
+	padding: 2px 8px;
+	border-radius: 999px;
+	border: 1px solid var(--color-border);
+	color: var(--color-text-muted);
+}
