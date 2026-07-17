@@ -26,6 +26,7 @@ export function Dock() {
 	};
 
 	const onPointerLeave = () => {
+		if (prefersReducedMotion()) return;
 		for (const el of iconRefs.current.values()) {
 			gsap.to(el, { scale: 1, y: 0, duration: 0.25, ease: "power2.out" });
 		}

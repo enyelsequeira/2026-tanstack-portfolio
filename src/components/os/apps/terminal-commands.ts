@@ -36,6 +36,7 @@ export function runCommand(input: string): TerminalResult {
 		case "ls":
 			return { output: APP_IDS.map((id) => `${id}.app`) };
 		case "open": {
+			if (!args[0]) return { output: ["usage: open <app>"] };
 			const target = (args[0] ?? "").replace(/\.app$/, "");
 			const appId = APP_IDS.find((id) => id === target);
 			if (!appId) {

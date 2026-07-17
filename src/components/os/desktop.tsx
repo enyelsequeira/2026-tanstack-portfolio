@@ -27,7 +27,9 @@ const DESKTOP_ICON_IDS: AppId[] = ["about", "projects", "blog", "terminal"];
 const BOOT_KEY = "enyelos-booted";
 
 export function Desktop() {
-	const isMobile = useMediaQuery("(max-width: 62em)");
+	const isMobile = useMediaQuery("(max-width: 62em)", false, {
+		getInitialValueInEffect: false,
+	});
 
 	if (isMobile) return <Springboard />;
 	return (

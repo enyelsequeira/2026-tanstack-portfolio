@@ -7,16 +7,24 @@ import { prefersReducedMotion } from "./motion";
 export function BootScreen({ onDone }: { onDone: () => void }) {
 	const overlayRef = useRef<HTMLDivElement>(null);
 	const timelineRef = useRef<gsap.core.Timeline | null>(null);
+	const doneRef = useRef(false);
 	const reduced = prefersReducedMotion();
 
+	const fireDone = () => {
+		if (doneRef.current) return;
+		doneRef.current = true;
+		onDone();
+	};
+
+	// biome-ignore lint/correctness/useExhaustiveDependencies: fireDone is stable via doneRef guard; only reduced should retrigger this effect
 	useEffect(() => {
-		if (reduced) onDone();
-	}, [reduced, onDone]);
+		if (reduced) fireDone();
+	}, [reduced]);
 
 	useGSAP(
 		() => {
 			if (reduced || !overlayRef.current) return;
-			const tl = gsap.timeline({ onComplete: onDone });
+			const tl = gsap.timeline({ onComplete: fireDone });
 			tl.from(`.${classes.logo}`, {
 				opacity: 0,
 				scale: 0.9,

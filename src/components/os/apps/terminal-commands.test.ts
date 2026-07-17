@@ -37,6 +37,10 @@ describe("runCommand", () => {
 		expect(result.output[0]).toContain("no such app");
 	});
 
+	it("open without an argument prints usage", () => {
+		expect(runCommand("open").output[0]).toBe("usage: open <app>");
+	});
+
 	it("clear returns a clear action", () => {
 		expect(runCommand("clear").action).toEqual({ type: "clear" });
 	});
