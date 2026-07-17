@@ -60,7 +60,11 @@ export function Springboard() {
 							</button>
 						</header>
 						<div className={classes.sheetContent}>
-							<AppContent />
+							{openApp === "terminal" ? (
+								<TerminalApp onOpenApp={setOpenApp} />
+							) : (
+								<AppContent />
+							)}
 						</div>
 					</div>
 				)}

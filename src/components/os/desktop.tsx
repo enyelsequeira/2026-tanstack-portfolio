@@ -13,7 +13,11 @@ import { APPS } from "./registry";
 import { Springboard } from "./springboard";
 import type { AppId } from "./types";
 import { OsWindowFrame } from "./window";
-import { useWindowManager, WindowManagerProvider } from "./window-manager";
+import {
+	bootedWindowManagerState,
+	useWindowManager,
+	WindowManagerProvider,
+} from "./window-manager";
 
 const APP_COMPONENTS: Record<AppId, ComponentType> = {
 	about: AboutApp,
@@ -27,36 +31,67 @@ const DESKTOP_ICON_IDS: AppId[] = ["about", "projects", "blog", "terminal"];
 const BOOT_KEY = "enyelos-booted";
 
 export function Desktop() {
-	const isMobile = useMediaQuery("(max-width: 62em)", false, {
-		getInitialValueInEffect: false,
-	});
+	// resolved in an effect: server and first client render agree (desktop),
+	// so hydration never mismatches; phones swap to the springboard one
+	// commit later, before boot starts (bootReady gates it)
+	const isMobile = useMediaQuery("(max-width: 62em)");
+	const [power, setPower] = useState<"on" | "off">("on");
+	const [session, setSession] = useState(0);
 
 	if (isMobile) return <Springboard />;
+
+	if (power === "off") {
+		return (
+			<div className={classes.powerOff}>
+				<button
+					type="button"
+					className={classes.powerOnButton}
+					onClick={() => {
+						sessionStorage.removeItem(BOOT_KEY);
+						setSession((s) => s + 1);
+						setPower("on");
+					}}
+					aria-label="Power on EnyelOS"
+				>
+					⏻
+				</button>
+			</div>
+		);
+	}
+
 	return (
-		<WindowManagerProvider>
-			<DesktopShell />
+		<WindowManagerProvider
+			key={session}
+			initialState={bootedWindowManagerState(["about"])}
+		>
+			<DesktopShell
+				bootReady={isMobile === false}
+				onShutdown={() => setPower("off")}
+			/>
 		</WindowManagerProvider>
 	);
 }
 
 type BootPhase = "pending" | "booting" | "done";
 
-function DesktopShell() {
+function DesktopShell({
+	bootReady,
+	onShutdown,
+}: {
+	bootReady: boolean;
+	onShutdown: () => void;
+}) {
 	const { state, open } = useWindowManager();
 	const [boot, setBoot] = useState<BootPhase>("pending");
 
 	useEffect(() => {
+		if (!bootReady) return;
 		if (sessionStorage.getItem(BOOT_KEY)) {
 			setBoot("done");
 		} else {
 			setBoot("booting");
 		}
-	}, []);
-
-	// biome-ignore lint/correctness/useExhaustiveDependencies: welcome window opens exactly once, when boot completes
-	useEffect(() => {
-		if (boot === "done" && state.windows.length === 0) open("about");
-	}, [boot]);
+	}, [bootReady]);
 
 	const finishBoot = () => {
 		sessionStorage.setItem(BOOT_KEY, "1");
@@ -71,7 +106,7 @@ function DesktopShell() {
 				<div className={classes.grain} />
 			</div>
 
-			<MenuBar />
+			<MenuBar onShutdown={onShutdown} />
 
 			<div className={classes.icons}>
 				{DESKTOP_ICON_IDS.map((id) => {
@@ -82,7 +117,7 @@ function DesktopShell() {
 							key={app.id}
 							type="button"
 							className={classes.desktopIcon}
-							onDoubleClick={() => open(app.id)}
+							onClick={() => open(app.id)}
 							aria-label={`Open ${app.title}`}
 						>
 							<span className={classes.desktopIconGlyph}>

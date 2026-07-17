@@ -13,7 +13,7 @@ function formatClock(date: Date): string {
 	});
 }
 
-export function MenuBar() {
+export function MenuBar({ onShutdown }: { onShutdown?: () => void }) {
 	const { state } = useWindowManager();
 	const focused = selectFocusedApp(state);
 	const [now, setNow] = useState<string>("");
@@ -26,7 +26,15 @@ export function MenuBar() {
 
 	return (
 		<header className={classes.bar}>
-			<span className={classes.brand}>⏻ EnyelOS</span>
+			<button
+				type="button"
+				className={classes.brand}
+				onClick={onShutdown}
+				aria-label="Shut down EnyelOS"
+				title="Shut down"
+			>
+				⏻ EnyelOS
+			</button>
 			<span className={classes.appTitle}>
 				{focused ? getApp(focused).title : "Desktop"}
 			</span>

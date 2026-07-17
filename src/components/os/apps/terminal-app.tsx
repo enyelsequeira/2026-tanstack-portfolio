@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import type { AppId } from "../types";
 import { useWindowManager } from "../window-manager";
 import classes from "./terminal-app.module.css";
 import { runCommand, suggestCommands } from "./terminal-commands";
@@ -11,8 +12,13 @@ type HistoryEntry = {
 
 const WELCOME = ["EnyelOS Terminal — type `help` to get started."];
 
-export function TerminalApp() {
+export function TerminalApp({
+	onOpenApp,
+}: {
+	onOpenApp?: (appId: AppId) => void;
+}) {
 	const { open } = useWindowManager();
+	const openApp = onOpenApp ?? open;
 	const [history, setHistory] = useState<HistoryEntry[]>([]);
 	const [input, setInput] = useState("");
 	const nextId = useRef(1);
@@ -31,10 +37,11 @@ export function TerminalApp() {
 		e.preventDefault();
 		const first = suggestions[0];
 		if (!first) return;
-		if (!input.includes(" ")) {
+		const base = input.trimStart();
+		if (!base.includes(" ")) {
 			setInput(`${first} `);
 		} else {
-			setInput(`${input.slice(0, input.indexOf(" ") + 1)}${first}`);
+			setInput(`${base.slice(0, base.indexOf(" ") + 1)}${first}`);
 		}
 	};
 
@@ -49,7 +56,7 @@ export function TerminalApp() {
 				{ id: nextId.current++, command: input, output: result.output },
 			]);
 		}
-		if (result.action?.type === "open") open(result.action.appId);
+		if (result.action?.type === "open") openApp(result.action.appId);
 		setInput("");
 	};
 

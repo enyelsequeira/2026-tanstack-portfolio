@@ -77,8 +77,16 @@ export function OsWindowFrame({
 
 	const handleMinimize = () =>
 		animateOut({ scale: 0.5, opacity: 0, y: window.innerHeight / 2 }, () => {
-			// reset transform so restore renders cleanly
-			if (frameRef.current) gsap.set(frameRef.current, { clearProps: "all" });
+			const el = frameRef.current;
+			if (el) {
+				// clearProps wipes React-managed inline styles too; re-apply the
+				// rect so the frame is intact when the window is restored
+				gsap.set(el, { clearProps: "all" });
+				el.style.width = `${win.rect.width}px`;
+				el.style.height = `${win.rect.height}px`;
+				el.style.transform = `translate(${win.rect.x}px, ${win.rect.y}px)`;
+				el.style.zIndex = String(win.zIndex);
+			}
 			minimize(win.appId);
 		});
 

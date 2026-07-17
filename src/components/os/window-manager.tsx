@@ -26,6 +26,15 @@ export const initialWindowManagerState: WindowManagerState = {
 	nextZIndex: 1,
 };
 
+/** Initial state with the given apps already open — lets the server render
+ * window content (SEO) instead of opening windows in a client effect. */
+export function bootedWindowManagerState(appIds: AppId[]): WindowManagerState {
+	return appIds.reduce(
+		(state, appId) => windowManagerReducer(state, { type: "OPEN", appId }),
+		initialWindowManagerState,
+	);
+}
+
 function focusWindow(
 	state: WindowManagerState,
 	appId: AppId,
@@ -132,11 +141,14 @@ const WindowManagerContext = createContext<WindowManagerContextValue | null>(
 	null,
 );
 
-export function WindowManagerProvider({ children }: { children: ReactNode }) {
-	const [state, dispatch] = useReducer(
-		windowManagerReducer,
-		initialWindowManagerState,
-	);
+export function WindowManagerProvider({
+	children,
+	initialState = initialWindowManagerState,
+}: {
+	children: ReactNode;
+	initialState?: WindowManagerState;
+}) {
+	const [state, dispatch] = useReducer(windowManagerReducer, initialState);
 
 	const value = useMemo<WindowManagerContextValue>(
 		() => ({
