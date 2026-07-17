@@ -1,0 +1,102 @@
+.app {
+	padding: 24px 28px 32px;
+}
+
+.list {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.card {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	text-align: left;
+	padding: 14px 16px;
+	border: 1px solid var(--color-border);
+	border-radius: 12px;
+	background: rgba(255, 255, 255, 0.03);
+	cursor: pointer;
+	transition:
+		border-color 140ms ease,
+		background 140ms ease;
+}
+
+.card:hover {
+	border-color: var(--color-accent-secondary);
+	background: rgba(99, 102, 241, 0.06);
+}
+
+.date {
+	font-family: "DM Mono", monospace;
+	font-size: 11px;
+	color: var(--color-text-muted);
+}
+
+.cardTitle {
+	font-family: "DM Serif Display", serif;
+	font-size: 18px;
+	color: var(--color-text-primary);
+}
+
+.summary {
+	font-size: 12px;
+	line-height: 1.6;
+	color: var(--color-text-muted);
+}
+
+.backButton {
+	background: none;
+	border: none;
+	padding: 0;
+	margin-bottom: 16px;
+	font-family: "DM Mono", monospace;
+	font-size: 12px;
+	color: var(--color-accent-primary);
+	cursor: pointer;
+}
+
+.postTitle {
+	font-family: "DM Serif Display", serif;
+	font-size: 26px;
+	font-weight: 400;
+	margin: 4px 0 10px;
+	color: var(--color-text-primary);
+}
+
+.tags {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+	margin-bottom: 18px;
+}
+
+.prose {
+	font-size: 14px;
+	line-height: 1.8;
+	color: var(--color-text-muted);
+}
+
+.prose :global(h2),
+.prose :global(h3) {
+	color: var(--color-text-primary);
+	font-family: "DM Serif Display", serif;
+	font-weight: 400;
+}
+
+.prose :global(a) {
+	color: var(--color-accent-primary);
+}
+
+.prose :global(pre) {
+	border-radius: 10px;
+	padding: 14px;
+	overflow-x: auto;
+	background: rgba(0, 0, 0, 0.45);
+	font-size: 12px;
+}
+
+.prose :global(code) {
+	font-family: "DM Mono", monospace;
+}
