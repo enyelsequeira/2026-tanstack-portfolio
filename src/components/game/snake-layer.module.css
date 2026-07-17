@@ -1,0 +1,41 @@
+.layer {
+	position: fixed;
+	inset: 0;
+	z-index: 60;
+	pointer-events: none;
+}
+
+.segment {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 28px;
+	height: 28px;
+	border-radius: 6px;
+	background: var(--mantine-color-brand-5, #6366f1);
+	box-shadow: 0 0 8px rgba(99, 102, 241, 0.5);
+	opacity: 0.75;
+	will-change: transform;
+}
+
+.segment[data-head="true"] {
+	opacity: 1;
+	background: var(--mantine-color-brand-3, #a5b4fc);
+	box-shadow: 0 0 14px rgba(165, 180, 252, 0.8);
+}
+
+/* Hunt complete: the snake freezes and settles into a calm "done" green. */
+.layer[data-done="true"] .segment {
+	background: var(--mantine-color-teal-5, #20c997);
+	box-shadow: 0 0 10px rgba(32, 201, 151, 0.55);
+	opacity: 0.85;
+	transition:
+		background 0.4s ease,
+		box-shadow 0.4s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.segment {
+		box-shadow: none;
+	}
+}

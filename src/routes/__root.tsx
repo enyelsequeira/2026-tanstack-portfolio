@@ -13,7 +13,13 @@ import ConvexProvider from "../integrations/convex/provider";
 import appCss from "../styles.css?url";
 
 import "@/lib/animations/register-plugins";
+import { CollectibleLayer } from "@/components/game/collectible-layer";
+import { ExplorerToggle } from "@/components/game/explorer-toggle";
+import { RevealToast } from "@/components/game/reveal-toast";
+import { SnakeLayer } from "@/components/game/snake-layer";
+import { StashPanel } from "@/components/game/stash-panel";
 import { MagneticCursor } from "@/lib/animations/magnetic-cursor";
+import { GameProvider } from "@/lib/game/game-context";
 
 const theme = createTheme({
 	primaryColor: "brand",
@@ -113,7 +119,14 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 					cssVariablesResolver={cssVariablesResolver}
 				>
 					<MagneticCursor />
-					<ConvexProvider>{children}</ConvexProvider>
+					<GameProvider>
+						<ConvexProvider>{children}</ConvexProvider>
+						<CollectibleLayer />
+						<SnakeLayer />
+						<ExplorerToggle />
+						<RevealToast />
+						<StashPanel />
+					</GameProvider>
 					<Scripts />
 				</MantineProvider>
 			</body>

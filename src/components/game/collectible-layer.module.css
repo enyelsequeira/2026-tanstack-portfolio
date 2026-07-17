@@ -1,0 +1,107 @@
+.layer {
+	position: fixed;
+	inset: 0;
+	z-index: 90;
+	pointer-events: none;
+}
+
+.collectible {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: grid;
+	place-items: center;
+	width: 44px;
+	height: 44px;
+	padding: 0;
+	border: none;
+	border-radius: 50%;
+	background: transparent;
+	cursor: pointer;
+	will-change: transform, opacity;
+	transition: opacity 0.3s ease;
+	-webkit-tap-highlight-color: transparent;
+}
+
+.glyph {
+	position: relative;
+	z-index: 1;
+	font-family: var(--mantine-font-family-monospace, monospace);
+	font-size: 1.1rem;
+	font-weight: 500;
+	line-height: 1;
+	color: var(--color-text-primary);
+	text-shadow: 0 0 12px rgba(99, 102, 241, 0.6);
+	animation: bob 3s ease-in-out infinite;
+}
+
+.ring {
+	position: absolute;
+	inset: 0;
+	border-radius: 50%;
+	border: 1px solid rgba(99, 102, 241, 0.4);
+	background: radial-gradient(
+		circle,
+		rgba(99, 102, 241, 0.22) 0%,
+		rgba(99, 102, 241, 0) 70%
+	);
+	opacity: 0.7;
+	transition:
+		opacity 0.25s ease,
+		box-shadow 0.25s ease,
+		border-color 0.25s ease;
+}
+
+.collectible[data-near="true"] .ring {
+	opacity: 1;
+	border-color: var(--color-accent-secondary);
+	box-shadow:
+		0 0 18px rgba(99, 102, 241, 0.55),
+		inset 0 0 12px rgba(99, 102, 241, 0.35);
+}
+
+.collectible:focus-visible {
+	outline: 2px solid var(--color-accent-secondary);
+	outline-offset: 4px;
+	border-radius: 50%;
+}
+
+.collectible[data-grabbed="true"] .glyph,
+.collectible[data-grabbed="true"] .ring {
+	animation: pop 0.32s ease forwards;
+}
+
+@keyframes bob {
+	0%,
+	100% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-4px);
+	}
+}
+
+@keyframes pop {
+	0% {
+		transform: scale(1);
+		opacity: 1;
+	}
+	40% {
+		transform: scale(1.5);
+		opacity: 1;
+	}
+	100% {
+		transform: scale(2.4);
+		opacity: 0;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.glyph {
+		animation: none;
+	}
+	.collectible[data-grabbed="true"] {
+		animation: none;
+		opacity: 0;
+	}
+}
