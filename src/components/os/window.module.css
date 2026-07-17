@@ -1,0 +1,162 @@
+.frame {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: flex;
+	flex-direction: column;
+	background: var(--glass-bg);
+	backdrop-filter: var(--glass-blur);
+	-webkit-backdrop-filter: var(--glass-blur);
+	border: 1px solid var(--glass-border);
+	border-top-color: var(--glass-highlight);
+	border-radius: var(--glass-radius);
+	box-shadow: var(--glass-shadow);
+	overflow: hidden;
+	will-change: transform;
+}
+
+.frame[data-minimized] {
+	display: none;
+}
+
+.frame[data-maximized] {
+	inset: var(--os-menubar-height) 8px 92px 8px;
+	width: auto;
+	height: auto;
+	transform: none;
+}
+
+.titleBar {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	height: 40px;
+	padding: 0 12px;
+	flex-shrink: 0;
+	cursor: grab;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+	user-select: none;
+	touch-action: none;
+}
+
+.titleBar:active {
+	cursor: grabbing;
+}
+
+.trafficLights {
+	display: flex;
+	gap: 8px;
+	flex: 1;
+}
+
+.trafficLights button {
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+	border: none;
+	padding: 0;
+	cursor: pointer;
+	transition: filter 120ms ease;
+}
+
+.trafficLights button:hover {
+	filter: brightness(1.25);
+}
+
+.lightClose {
+	background: #ff5f57;
+}
+
+.lightMinimize {
+	background: #febc2e;
+}
+
+.lightZoom {
+	background: #28c840;
+}
+
+.title {
+	font-family: "DM Mono", monospace;
+	font-size: 12px;
+	font-weight: 500;
+	letter-spacing: 0.04em;
+	color: var(--color-text-muted);
+}
+
+.titleSpacer {
+	flex: 1;
+}
+
+.content {
+	flex: 1;
+	overflow-y: auto;
+	overscroll-behavior: contain;
+}
+
+.resizeHandle {
+	position: absolute;
+}
+
+.resizeHandle[data-direction="n"] {
+	top: -3px;
+	left: 8px;
+	right: 8px;
+	height: 6px;
+	cursor: ns-resize;
+}
+
+.resizeHandle[data-direction="s"] {
+	bottom: -3px;
+	left: 8px;
+	right: 8px;
+	height: 6px;
+	cursor: ns-resize;
+}
+
+.resizeHandle[data-direction="e"] {
+	right: -3px;
+	top: 8px;
+	bottom: 8px;
+	width: 6px;
+	cursor: ew-resize;
+}
+
+.resizeHandle[data-direction="w"] {
+	left: -3px;
+	top: 8px;
+	bottom: 8px;
+	width: 6px;
+	cursor: ew-resize;
+}
+
+.resizeHandle[data-direction="ne"] {
+	top: -4px;
+	right: -4px;
+	width: 12px;
+	height: 12px;
+	cursor: nesw-resize;
+}
+
+.resizeHandle[data-direction="nw"] {
+	top: -4px;
+	left: -4px;
+	width: 12px;
+	height: 12px;
+	cursor: nwse-resize;
+}
+
+.resizeHandle[data-direction="se"] {
+	bottom: -4px;
+	right: -4px;
+	width: 12px;
+	height: 12px;
+	cursor: nwse-resize;
+}
+
+.resizeHandle[data-direction="sw"] {
+	bottom: -4px;
+	left: -4px;
+	width: 12px;
+	height: 12px;
+	cursor: nesw-resize;
+}
