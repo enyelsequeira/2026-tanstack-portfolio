@@ -1,11 +1,11 @@
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { type ReactNode, useRef } from "react";
+import { type ReactNode, useEffect, useRef } from "react";
 import { prefersReducedMotion } from "./motion";
 import { getApp } from "./registry";
-import type { OsWindow, Rect } from "./types";
+import type { OsWindow } from "./types";
 import classes from "./window.module.css";
-import { useWindowManager } from "./window-manager";
+import { selectFocusedApp, useWindowManager } from "./window-manager";
 
 const MIN_WIDTH = 320;
 const MIN_HEIGHT = 240;
@@ -35,10 +35,16 @@ export function OsWindowFrame({
 	win: OsWindow;
 	children: ReactNode;
 }) {
-	const { close, focus, minimize, toggleMaximize, setRect } =
+	const { state, close, focus, minimize, toggleMaximize, setRect } =
 		useWindowManager();
 	const frameRef = useRef<HTMLDivElement>(null);
+	const gestureCleanupRef = useRef<(() => void) | null>(null);
 	const app = getApp(win.appId);
+	const isFocused = selectFocusedApp(state) === win.appId;
+
+	useEffect(() => {
+		return () => gestureCleanupRef.current?.();
+	}, []);
 
 	useGSAP(
 		() => {
@@ -77,9 +83,11 @@ export function OsWindowFrame({
 		});
 
 	const startDrag = (e: React.PointerEvent) => {
+		e.stopPropagation();
 		if (win.maximized) return;
 		if ((e.target as HTMLElement).closest("button")) return;
 		e.preventDefault();
+		gestureCleanupRef.current?.();
 		focus(win.appId);
 		const startX = e.clientX;
 		const startY = e.clientY;
@@ -99,12 +107,17 @@ export function OsWindowFrame({
 				),
 			});
 		};
-		const onUp = () => {
+		const cleanup = () => {
 			window.removeEventListener("pointermove", onMove);
 			window.removeEventListener("pointerup", onUp);
+			window.removeEventListener("pointercancel", onUp);
+			gestureCleanupRef.current = null;
 		};
+		const onUp = () => cleanup();
+		gestureCleanupRef.current = cleanup;
 		window.addEventListener("pointermove", onMove);
 		window.addEventListener("pointerup", onUp);
+		window.addEventListener("pointercancel", onUp);
 	};
 
 	const startResize =
@@ -112,6 +125,7 @@ export function OsWindowFrame({
 			if (win.maximized) return;
 			e.preventDefault();
 			e.stopPropagation();
+			gestureCleanupRef.current?.();
 			focus(win.appId);
 			const startX = e.clientX;
 			const startY = e.clientY;
@@ -137,14 +151,19 @@ export function OsWindowFrame({
 					);
 					height = start.height + (start.y - y);
 				}
-				setRect(win.appId, { x, y, width, height } as Rect);
+				setRect(win.appId, { x, y, width, height });
 			};
-			const onUp = () => {
+			const cleanup = () => {
 				window.removeEventListener("pointermove", onMove);
 				window.removeEventListener("pointerup", onUp);
+				window.removeEventListener("pointercancel", onUp);
+				gestureCleanupRef.current = null;
 			};
+			const onUp = () => cleanup();
+			gestureCleanupRef.current = cleanup;
 			window.addEventListener("pointermove", onMove);
 			window.addEventListener("pointerup", onUp);
+			window.addEventListener("pointercancel", onUp);
 		};
 
 	const style: React.CSSProperties = win.maximized
@@ -162,6 +181,7 @@ export function OsWindowFrame({
 			className={classes.frame}
 			data-maximized={win.maximized || undefined}
 			data-minimized={win.minimized || undefined}
+			data-focused={isFocused || undefined}
 			style={style}
 			onPointerDown={() => focus(win.appId)}
 			role="dialog"
