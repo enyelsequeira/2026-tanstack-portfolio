@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
+import { flushSync } from "react-dom";
 import type { AppId } from "../types";
-import { useWindowManager } from "../window-manager";
+import { openWindow } from "../window-store";
 import classes from "./terminal-app.module.css";
 import { runCommand, suggestCommands } from "./terminal-commands";
 
@@ -17,18 +18,12 @@ export function TerminalApp({
 }: {
 	onOpenApp?: (appId: AppId) => void;
 }) {
-	const { open } = useWindowManager();
-	const openApp = onOpenApp ?? open;
+	const openApp = onOpenApp ?? openWindow;
 	const [history, setHistory] = useState<HistoryEntry[]>([]);
 	const [input, setInput] = useState("");
 	const nextId = useRef(1);
 	const scrollRef = useRef<HTMLDivElement>(null);
 	const inputRef = useRef<HTMLInputElement>(null);
-
-	// biome-ignore lint/correctness/useExhaustiveDependencies: re-run on new history entries to auto-scroll
-	useEffect(() => {
-		scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight });
-	}, [history]);
 
 	const suggestions = suggestCommands(input);
 
@@ -48,16 +43,20 @@ export function TerminalApp({
 	const submit = (e: React.FormEvent) => {
 		e.preventDefault();
 		const result = runCommand(input);
-		if (result.action?.type === "clear") {
-			setHistory([]);
-		} else {
-			setHistory((prev) => [
-				...prev,
-				{ id: nextId.current++, command: input, output: result.output },
-			]);
-		}
+		// flush so the new entry is in the DOM before scrolling to it
+		flushSync(() => {
+			if (result.action?.type === "clear") {
+				setHistory([]);
+			} else {
+				setHistory((prev) => [
+					...prev,
+					{ id: nextId.current++, command: input, output: result.output },
+				]);
+			}
+			setInput("");
+		});
+		scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight });
 		if (result.action?.type === "open") openApp(result.action.appId);
-		setInput("");
 	};
 
 	return (

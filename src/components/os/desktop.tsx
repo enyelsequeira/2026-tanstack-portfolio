@@ -1,3 +1,4 @@
+import { useValue } from "@legendapp/state/react";
 import { useMediaQuery } from "@mantine/hooks";
 import { type ComponentType, useEffect, useState } from "react";
 import { AboutApp } from "./apps/about-app";
@@ -9,15 +10,12 @@ import { BootScreen } from "./boot-screen";
 import classes from "./desktop.module.css";
 import { Dock } from "./dock";
 import { MenuBar } from "./menu-bar";
+import { prefersReducedMotion } from "./motion";
 import { APPS } from "./registry";
 import { Springboard } from "./springboard";
 import type { AppId } from "./types";
 import { OsWindowFrame } from "./window";
-import {
-	bootedWindowManagerState,
-	useWindowManager,
-	WindowManagerProvider,
-} from "./window-manager";
+import { openWindow, resetWindowStore, windowStore$ } from "./window-store";
 
 const APP_COMPONENTS: Record<AppId, ComponentType> = {
 	about: AboutApp,
@@ -48,6 +46,7 @@ export function Desktop() {
 					className={classes.powerOnButton}
 					onClick={() => {
 						sessionStorage.removeItem(BOOT_KEY);
+						resetWindowStore();
 						setSession((s) => s + 1);
 						setPower("on");
 					}}
@@ -60,15 +59,11 @@ export function Desktop() {
 	}
 
 	return (
-		<WindowManagerProvider
+		<DesktopShell
 			key={session}
-			initialState={bootedWindowManagerState(["about"])}
-		>
-			<DesktopShell
-				bootReady={isMobile === false}
-				onShutdown={() => setPower("off")}
-			/>
-		</WindowManagerProvider>
+			bootReady={!isMobile}
+			onShutdown={() => setPower("off")}
+		/>
 	);
 }
 
@@ -81,12 +76,14 @@ function DesktopShell({
 	bootReady: boolean;
 	onShutdown: () => void;
 }) {
-	const { state, open } = useWindowManager();
+	const order = useValue(windowStore$.order);
 	const [boot, setBoot] = useState<BootPhase>("pending");
 
 	useEffect(() => {
 		if (!bootReady) return;
-		if (sessionStorage.getItem(BOOT_KEY)) {
+		// reduced-motion users skip the boot animation entirely, so the
+		// BootScreen never mounts and never has to notify us from an effect
+		if (sessionStorage.getItem(BOOT_KEY) || prefersReducedMotion()) {
 			setBoot("done");
 		} else {
 			setBoot("booting");
@@ -117,7 +114,7 @@ function DesktopShell({
 							key={app.id}
 							type="button"
 							className={classes.desktopIcon}
-							onClick={() => open(app.id)}
+							onClick={() => openWindow(app.id)}
 							aria-label={`Open ${app.title}`}
 						>
 							<span className={classes.desktopIconGlyph}>
@@ -129,10 +126,10 @@ function DesktopShell({
 				})}
 			</div>
 
-			{state.windows.map((win) => {
-				const AppContent = APP_COMPONENTS[win.appId];
+			{order.map((appId) => {
+				const AppContent = APP_COMPONENTS[appId];
 				return (
-					<OsWindowFrame key={win.appId} win={win}>
+					<OsWindowFrame key={appId} appId={appId}>
 						<AppContent />
 					</OsWindowFrame>
 				);

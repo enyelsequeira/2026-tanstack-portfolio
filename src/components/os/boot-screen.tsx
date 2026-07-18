@@ -2,13 +2,14 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useEffect, useRef } from "react";
 import classes from "./boot-screen.module.css";
-import { prefersReducedMotion } from "./motion";
 
+/** Only mounted when the boot animation should actually play — the desktop
+ * skips straight to "done" for reduced-motion users, so no notify-parent
+ * effect is needed here. */
 export function BootScreen({ onDone }: { onDone: () => void }) {
 	const overlayRef = useRef<HTMLDivElement>(null);
 	const timelineRef = useRef<gsap.core.Timeline | null>(null);
 	const doneRef = useRef(false);
-	const reduced = prefersReducedMotion();
 
 	const fireDone = () => {
 		if (doneRef.current) return;
@@ -16,14 +17,9 @@ export function BootScreen({ onDone }: { onDone: () => void }) {
 		onDone();
 	};
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: fireDone is stable via doneRef guard; only reduced should retrigger this effect
-	useEffect(() => {
-		if (reduced) fireDone();
-	}, [reduced]);
-
 	useGSAP(
 		() => {
-			if (reduced || !overlayRef.current) return;
+			if (!overlayRef.current) return;
 			const tl = gsap.timeline({ onComplete: fireDone });
 			tl.from(`.${classes.logo}`, {
 				opacity: 0,
@@ -55,8 +51,6 @@ export function BootScreen({ onDone }: { onDone: () => void }) {
 			window.removeEventListener("keydown", skip);
 		};
 	}, []);
-
-	if (reduced) return null;
 
 	return (
 		<div ref={overlayRef} className={classes.overlay}>

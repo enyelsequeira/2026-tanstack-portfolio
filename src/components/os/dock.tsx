@@ -1,12 +1,14 @@
+import { useValue } from "@legendapp/state/react";
+import { Tooltip } from "@mantine/core";
 import gsap from "gsap";
 import { useRef } from "react";
 import classes from "./dock.module.css";
 import { prefersReducedMotion } from "./motion";
 import { APPS } from "./registry";
-import { useWindowManager } from "./window-manager";
+import { openWindow, windowStore$ } from "./window-store";
 
 export function Dock() {
-	const { state, open } = useWindowManager();
+	const order = useValue(windowStore$.order);
 	const iconRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
 
 	const onPointerMove = (e: React.PointerEvent) => {
@@ -39,27 +41,35 @@ export function Dock() {
 			onPointerLeave={onPointerLeave}
 			aria-label="Dock"
 		>
-			{APPS.map((app) => {
-				const isOpen = state.windows.some((w) => w.appId === app.id);
-				return (
-					<button
-						key={app.id}
-						ref={(el) => {
-							if (el) iconRefs.current.set(app.id, el);
-							else iconRefs.current.delete(app.id);
-						}}
-						type="button"
-						className={classes.icon}
-						data-open={isOpen || undefined}
-						onClick={() => open(app.id)}
-						aria-label={`Open ${app.title}`}
-						title={app.title}
-					>
-						<app.icon size={26} stroke={1.5} />
-						<span className={classes.dot} />
-					</button>
-				);
-			})}
+			<Tooltip.Group openDelay={300} closeDelay={100}>
+				{APPS.map((app) => {
+					const isOpen = order.includes(app.id);
+					return (
+						<Tooltip
+							key={app.id}
+							label={app.title}
+							position="top"
+							withArrow
+							offset={12}
+						>
+							<button
+								ref={(el) => {
+									if (el) iconRefs.current.set(app.id, el);
+									else iconRefs.current.delete(app.id);
+								}}
+								type="button"
+								className={classes.icon}
+								data-open={isOpen || undefined}
+								onClick={() => openWindow(app.id)}
+								aria-label={`Open ${app.title}`}
+							>
+								<app.icon size={26} stroke={1.5} />
+								<span className={classes.dot} />
+							</button>
+						</Tooltip>
+					);
+				})}
+			</Tooltip.Group>
 		</nav>
 	);
 }

@@ -1,11 +1,20 @@
 import { useGSAP } from "@gsap/react";
+import { useValue } from "@legendapp/state/react";
 import gsap from "gsap";
 import { type ReactNode, useEffect, useRef } from "react";
 import { prefersReducedMotion } from "./motion";
 import { getApp } from "./registry";
-import type { OsWindow } from "./types";
+import type { AppId } from "./types";
 import classes from "./window.module.css";
-import { selectFocusedApp, useWindowManager } from "./window-manager";
+import {
+	closeWindow,
+	focusWindow,
+	minimizeWindow,
+	selectFocusedApp,
+	setWindowRect,
+	toggleMaximizeWindow,
+	windowStore$,
+} from "./window-store";
 
 const MIN_WIDTH = 320;
 const MIN_HEIGHT = 240;
@@ -29,18 +38,18 @@ const RESIZE_HANDLES: ResizeDirection[] = [
 ];
 
 export function OsWindowFrame({
-	win,
+	appId,
 	children,
 }: {
-	win: OsWindow;
+	appId: AppId;
 	children: ReactNode;
 }) {
-	const { state, close, focus, minimize, toggleMaximize, setRect } =
-		useWindowManager();
+	const win$ = windowStore$.windows[appId];
+	const win = useValue(win$);
+	const isFocused = useValue(selectFocusedApp) === appId;
 	const frameRef = useRef<HTMLDivElement>(null);
 	const gestureCleanupRef = useRef<(() => void) | null>(null);
-	const app = getApp(win.appId);
-	const isFocused = selectFocusedApp(state) === win.appId;
+	const app = getApp(appId);
 
 	useEffect(() => {
 		return () => gestureCleanupRef.current?.();
@@ -59,6 +68,8 @@ export function OsWindowFrame({
 		{ scope: frameRef },
 	);
 
+	if (!win) return null;
+
 	const animateOut = (vars: gsap.TweenVars, onDone: () => void) => {
 		if (prefersReducedMotion() || !frameRef.current) {
 			onDone();
@@ -73,35 +84,37 @@ export function OsWindowFrame({
 	};
 
 	const handleClose = () =>
-		animateOut({ scale: 0.92, opacity: 0 }, () => close(win.appId));
+		animateOut({ scale: 0.92, opacity: 0 }, () => closeWindow(appId));
 
 	const handleMinimize = () =>
 		animateOut({ scale: 0.5, opacity: 0, y: window.innerHeight / 2 }, () => {
 			const el = frameRef.current;
-			if (el) {
+			const rect = win$.rect.peek();
+			if (el && rect) {
 				// clearProps wipes React-managed inline styles too; re-apply the
 				// rect so the frame is intact when the window is restored
 				gsap.set(el, { clearProps: "all" });
-				el.style.width = `${win.rect.width}px`;
-				el.style.height = `${win.rect.height}px`;
-				el.style.transform = `translate(${win.rect.x}px, ${win.rect.y}px)`;
-				el.style.zIndex = String(win.zIndex);
+				el.style.width = `${rect.width}px`;
+				el.style.height = `${rect.height}px`;
+				el.style.transform = `translate(${rect.x}px, ${rect.y}px)`;
+				el.style.zIndex = String(win$.zIndex.peek());
 			}
-			minimize(win.appId);
+			minimizeWindow(appId);
 		});
 
 	const startDrag = (e: React.PointerEvent) => {
 		e.stopPropagation();
-		if (win.maximized) return;
+		if (win$.maximized.peek()) return;
 		if ((e.target as HTMLElement).closest("button")) return;
 		e.preventDefault();
 		gestureCleanupRef.current?.();
-		focus(win.appId);
+		focusWindow(appId);
 		const startX = e.clientX;
 		const startY = e.clientY;
-		const start = win.rect;
+		const start = win$.rect.peek();
+		if (!start) return;
 		const onMove = (ev: PointerEvent) => {
-			setRect(win.appId, {
+			setWindowRect(appId, {
 				...start,
 				x: clamp(
 					start.x + ev.clientX - startX,
@@ -130,14 +143,15 @@ export function OsWindowFrame({
 
 	const startResize =
 		(direction: ResizeDirection) => (e: React.PointerEvent) => {
-			if (win.maximized) return;
+			if (win$.maximized.peek()) return;
 			e.preventDefault();
 			e.stopPropagation();
 			gestureCleanupRef.current?.();
-			focus(win.appId);
+			focusWindow(appId);
 			const startX = e.clientX;
 			const startY = e.clientY;
-			const start = win.rect;
+			const start = win$.rect.peek();
+			if (!start) return;
 			const onMove = (ev: PointerEvent) => {
 				const dx = ev.clientX - startX;
 				const dy = ev.clientY - startY;
@@ -159,7 +173,7 @@ export function OsWindowFrame({
 					);
 					height = start.height + (start.y - y);
 				}
-				setRect(win.appId, { x, y, width, height });
+				setWindowRect(appId, { x, y, width, height });
 			};
 			const cleanup = () => {
 				window.removeEventListener("pointermove", onMove);
@@ -191,7 +205,7 @@ export function OsWindowFrame({
 			data-minimized={win.minimized || undefined}
 			data-focused={isFocused || undefined}
 			style={style}
-			onPointerDown={() => focus(win.appId)}
+			onPointerDown={() => focusWindow(appId)}
 			role="dialog"
 			aria-label={app.title}
 		>
@@ -212,7 +226,7 @@ export function OsWindowFrame({
 					<button
 						type="button"
 						className={classes.lightZoom}
-						onClick={() => toggleMaximize(win.appId)}
+						onClick={() => toggleMaximizeWindow(appId)}
 						aria-label={`Zoom ${app.title}`}
 					/>
 				</div>

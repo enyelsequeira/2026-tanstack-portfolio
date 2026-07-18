@@ -35,11 +35,7 @@ export function NavBar() {
 					<ul className={classes.links}>
 						{NAV_ITEMS.map((item) => (
 							<li key={item.hash}>
-								<Link
-									to="/"
-									hash={item.hash}
-									className={classes.link}
-								>
+								<Link to="/" hash={item.hash} className={classes.link}>
 									{item.label}
 								</Link>
 							</li>

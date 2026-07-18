@@ -1,7 +1,8 @@
+import { useValue } from "@legendapp/state/react";
 import { useEffect, useState } from "react";
 import classes from "./menu-bar.module.css";
 import { getApp } from "./registry";
-import { selectFocusedApp, useWindowManager } from "./window-manager";
+import { selectFocusedApp } from "./window-store";
 
 function formatClock(date: Date): string {
 	return date.toLocaleString("en-US", {
@@ -14,8 +15,7 @@ function formatClock(date: Date): string {
 }
 
 export function MenuBar({ onShutdown }: { onShutdown?: () => void }) {
-	const { state } = useWindowManager();
-	const focused = selectFocusedApp(state);
+	const focused = useValue(selectFocusedApp);
 	const [now, setNow] = useState<string>("");
 
 	useEffect(() => {
