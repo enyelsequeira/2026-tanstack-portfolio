@@ -1,3 +1,4 @@
+import { Stack, Text, Title } from "@mantine/core";
 import {
 	IconBrandGithub,
 	IconBrandLinkedin,
@@ -31,28 +32,31 @@ const LINKS = [
 
 export function ContactApp() {
 	return (
-		<div className={classes.app}>
-			<h1 className={classes.heading}>Let's work together</h1>
-			<p className={classes.sub}>
+		<Stack gap={0} p={28} h="100%">
+			<Title order={1} fz={26} fw={400} mb={8} c="obsidian.0">
+				Let's work together
+			</Title>
+			<Text fz={13} lh={1.7} mb={20} c="obsidian.3">
 				Open to remote roles and freelance projects. If you have a question or
 				would like to collaborate, get in touch.
-			</p>
-			<ul className={classes.links}>
+			</Text>
+			<Stack gap={10}>
 				{LINKS.map((link) => (
-					<li key={link.label}>
-						<a
-							href={link.href}
-							target="_blank"
-							rel="noopener noreferrer"
-							className={classes.link}
-						>
-							<link.icon size={18} stroke={1.5} />
-							<span>{link.label}</span>
-						</a>
-					</li>
+					<a
+						key={link.label}
+						href={link.href}
+						target="_blank"
+						rel="noopener noreferrer"
+						className={classes.link}
+					>
+						<link.icon size={18} stroke={1.5} />
+						<span>{link.label}</span>
+					</a>
 				))}
-			</ul>
-			<p className={classes.footer}>Enyel Sequeira · Open to Remote Roles</p>
-		</div>
+			</Stack>
+			<Text ff="monospace" fz={11} c="obsidian.3" mt="auto" pt={20}>
+				Enyel Sequeira · Open to Remote Roles
+			</Text>
+		</Stack>
 	);
 }

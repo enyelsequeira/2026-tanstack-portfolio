@@ -1,3 +1,12 @@
+import {
+	Box,
+	Group,
+	ScrollArea,
+	SimpleGrid,
+	Stack,
+	Text,
+	UnstyledButton,
+} from "@mantine/core";
 import { type ComponentType, useState } from "react";
 import { AboutApp } from "./apps/about-app";
 import { BlogApp } from "./apps/blog-app";
@@ -21,31 +30,60 @@ export function Springboard() {
 	const AppContent = openApp ? APP_COMPONENTS[openApp] : null;
 
 	return (
-		<div className={classes.screen}>
+		<Box pos="fixed" inset={0} bg="obsidian.9" style={{ overflow: "hidden" }}>
 			<div className={classes.wallpaper} aria-hidden="true" />
-			<header className={classes.statusBar}>⏻ EnyelOS</header>
+			<Box
+				component="header"
+				pos="relative"
+				pt={14}
+				px={18}
+				pb={8}
+				ff="monospace"
+				fz={12}
+				c="obsidian.0"
+			>
+				⏻ EnyelOS
+			</Box>
 
-			<div className={classes.grid}>
+			<SimpleGrid
+				cols={4}
+				spacing={8}
+				verticalSpacing={20}
+				px={18}
+				py={26}
+				pos="relative"
+			>
 				{APPS.map((app) => (
-					<button
+					<UnstyledButton
 						key={app.id}
-						type="button"
-						className={classes.icon}
 						onClick={() => setOpenApp(app.id)}
 						aria-label={`Open ${app.title}`}
+						c="obsidian.0"
 					>
-						<span className={classes.iconGlyph}>
-							<app.icon size={30} stroke={1.5} />
-						</span>
-						<span className={classes.iconLabel}>{app.title}</span>
-					</button>
+						<Stack gap={6} align="center">
+							<Box className={classes.iconGlyph}>
+								<app.icon size={30} stroke={1.5} />
+							</Box>
+							<Text className={classes.iconLabel}>{app.title}</Text>
+						</Stack>
+					</UnstyledButton>
 				))}
-			</div>
+			</SimpleGrid>
 
 			{openApp && AppContent && (
 				<div className={classes.sheet}>
-					<header className={classes.sheetHeader}>
-						<span className={classes.sheetTitle}>{getApp(openApp).title}</span>
+					<Group
+						component="header"
+						justify="space-between"
+						align="center"
+						wrap="nowrap"
+						px={18}
+						py={14}
+						style={{ borderBottom: "1px solid var(--glass-border)" }}
+					>
+						<Text ff="monospace" fz={13} c="obsidian.0">
+							{getApp(openApp).title}
+						</Text>
 						<button
 							type="button"
 							className={classes.closeButton}
@@ -54,16 +92,16 @@ export function Springboard() {
 						>
 							✕
 						</button>
-					</header>
-					<div className={classes.sheetContent}>
+					</Group>
+					<ScrollArea style={{ flex: 1 }}>
 						{openApp === "terminal" ? (
 							<TerminalApp onOpenApp={setOpenApp} />
 						) : (
 							<AppContent />
 						)}
-					</div>
+					</ScrollArea>
 				</div>
 			)}
-		</div>
+		</Box>
 	);
 }

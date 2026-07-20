@@ -1,4 +1,12 @@
-import { Typography } from "@mantine/core";
+import {
+	Box,
+	Group,
+	Stack,
+	Text,
+	Title,
+	Typography,
+	UnstyledButton,
+} from "@mantine/core";
 import { allPosts } from "content-collections";
 import { useState } from "react";
 import { TechTag } from "@/components/ui/tech-tag";
@@ -23,32 +31,38 @@ export function BlogApp() {
 
 	if (selected) {
 		return (
-			<div className={classes.app}>
-				<button
-					type="button"
-					className={classes.backButton}
+			<Box pt={24} px={28} pb={32}>
+				<UnstyledButton
 					onClick={() => setSelectedPath(null)}
+					c="brand.9"
+					ff="monospace"
+					fz={12}
+					mb={16}
 				>
 					← All posts
-				</button>
-				<p className={classes.date}>{formatDate(selected.date)}</p>
-				<h1 className={classes.postTitle}>{selected.title}</h1>
-				<div className={classes.tags}>
+				</UnstyledButton>
+				<Text ff="monospace" fz={11} c="obsidian.3">
+					{formatDate(selected.date)}
+				</Text>
+				<Title order={1} fz={26} fw={400} mt={4} mb={10} c="obsidian.0">
+					{selected.title}
+				</Title>
+				<Group gap={6} mb={18}>
 					{selected.tags.map((tag) => (
 						<TechTag key={tag} label={tag} />
 					))}
-				</div>
+				</Group>
 				<Typography className={classes.prose}>
 					{/* biome-ignore lint/security/noDangerouslySetInnerHtml: content-collections markdown is trusted authored content */}
 					<div dangerouslySetInnerHTML={{ __html: selected.html }} />
 				</Typography>
-			</div>
+			</Box>
 		);
 	}
 
 	return (
-		<div className={classes.app}>
-			<div className={classes.list}>
+		<Box pt={24} px={28} pb={32}>
+			<Stack gap={12}>
 				{posts.map((post) => (
 					<button
 						key={post._meta.path}
@@ -56,12 +70,18 @@ export function BlogApp() {
 						className={classes.card}
 						onClick={() => setSelectedPath(post._meta.path)}
 					>
-						<span className={classes.date}>{formatDate(post.date)}</span>
-						<span className={classes.cardTitle}>{post.title}</span>
-						<span className={classes.summary}>{post.summary}</span>
+						<Text ff="monospace" fz={11} c="obsidian.3">
+							{formatDate(post.date)}
+						</Text>
+						<Text ff="heading" fz={18} c="obsidian.0">
+							{post.title}
+						</Text>
+						<Text fz={12} lh={1.6} c="obsidian.3">
+							{post.summary}
+						</Text>
 					</button>
 				))}
-			</div>
-		</div>
+			</Stack>
+		</Box>
 	);
 }

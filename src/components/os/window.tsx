@@ -1,5 +1,6 @@
 import { useGSAP } from "@gsap/react";
 import { useValue } from "@legendapp/state/react";
+import { Box, Group, Text } from "@mantine/core";
 import gsap from "gsap";
 import { type ReactNode, useEffect, useRef } from "react";
 import { prefersReducedMotion } from "./motion";
@@ -210,28 +211,37 @@ export function OsWindowFrame({
 			aria-label={app.title}
 		>
 			<div className={classes.titleBar} onPointerDown={startDrag}>
-				<div className={classes.trafficLights}>
+				<Group gap={8} flex={1}>
 					<button
 						type="button"
-						className={classes.lightClose}
+						className={`${classes.light} ${classes.lightClose}`}
 						onClick={handleClose}
 						aria-label={`Close ${app.title}`}
 					/>
 					<button
 						type="button"
-						className={classes.lightMinimize}
+						className={`${classes.light} ${classes.lightMinimize}`}
 						onClick={handleMinimize}
 						aria-label={`Minimize ${app.title}`}
 					/>
 					<button
 						type="button"
-						className={classes.lightZoom}
+						className={`${classes.light} ${classes.lightZoom}`}
 						onClick={() => toggleMaximizeWindow(appId)}
 						aria-label={`Zoom ${app.title}`}
 					/>
-				</div>
-				<span className={classes.title}>{app.title}</span>
-				<span className={classes.titleSpacer} />
+				</Group>
+				<Text
+					span
+					ff="monospace"
+					fz={12}
+					fw={500}
+					lts="0.04em"
+					c="var(--color-text-muted)"
+				>
+					{app.title}
+				</Text>
+				<Box flex={1} />
 			</div>
 			<div className={classes.content}>{children}</div>
 			{!win.maximized &&

@@ -1,45 +1,97 @@
+import { Anchor, Box, Group, Stack, Text, Title } from "@mantine/core";
 import { TechTag } from "@/components/ui/tech-tag";
 import { projects } from "@/data/projects";
-import classes from "./projects-app.module.css";
 
 export function ProjectsApp() {
 	return (
-		<div className={classes.app}>
+		<Stack gap={20} px={28} pt={24} pb={32}>
 			{projects.map((project) => (
-				<article key={project.id} className={classes.card}>
-					<div className={classes.meta}>
-						<span className={classes.number}>{project.number}</span>
+				<Box
+					key={project.id}
+					component="article"
+					py={18}
+					px={20}
+					bd="1px solid var(--color-border)"
+					bdrs={12}
+					bg="rgba(255, 255, 255, 0.03)"
+				>
+					<Group justify="space-between" mb={6}>
+						<Text
+							ff="monospace"
+							fz={11}
+							lts="0.08em"
+							c="var(--color-accent-secondary)"
+						>
+							{project.number}
+						</Text>
 						{project.period && (
-							<span className={classes.period}>{project.period}</span>
+							<Text
+								ff="monospace"
+								fz={11}
+								lts="0.08em"
+								c="var(--color-text-muted)"
+							>
+								{project.period}
+							</Text>
 						)}
-					</div>
-					<h2 className={classes.title}>{project.title}</h2>
-					{project.role && <p className={classes.role}>{project.role}</p>}
-					<p className={classes.description}>{project.description}</p>
+					</Group>
+					<Title
+						order={2}
+						ff="heading"
+						fz={22}
+						fw={400}
+						c="var(--color-text-primary)"
+					>
+						{project.title}
+					</Title>
+					{project.role && (
+						<Text
+							ff="monospace"
+							fz={12}
+							mt={2}
+							mb={8}
+							c="var(--color-text-muted)"
+						>
+							{project.role}
+						</Text>
+					)}
+					<Text fz={13} lh={1.7} mb={10} c="var(--color-text-muted)">
+						{project.description}
+					</Text>
 					{project.highlights && (
-						<ul className={classes.highlights}>
+						<Box
+							component="ul"
+							fz={12}
+							lh={1.7}
+							mb={12}
+							pl={18}
+							c="var(--color-text-muted)"
+						>
 							{project.highlights.map((highlight) => (
 								<li key={highlight}>{highlight}</li>
 							))}
-						</ul>
+						</Box>
 					)}
-					<div className={classes.tags}>
+					<Group gap={6} mb={10}>
 						{project.tech.map((tech) => (
 							<TechTag key={tech} label={tech} />
 						))}
-					</div>
+					</Group>
 					{project.href && (
-						<a
-							className={classes.link}
+						<Anchor
 							href={project.href}
 							target="_blank"
 							rel="noopener noreferrer"
+							fz={12}
+							fw={500}
+							underline="hover"
+							c="var(--color-accent-primary)"
 						>
 							{project.linkLabel || "Visit"} →
-						</a>
+						</Anchor>
 					)}
-				</article>
+				</Box>
 			))}
-		</div>
+		</Stack>
 	);
 }

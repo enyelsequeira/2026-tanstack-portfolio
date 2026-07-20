@@ -1,4 +1,5 @@
 import { useGSAP } from "@gsap/react";
+import { Stack, Text } from "@mantine/core";
 import gsap from "gsap";
 import { useEffect, useRef } from "react";
 import classes from "./boot-screen.module.css";
@@ -53,12 +54,23 @@ export function BootScreen({ onDone }: { onDone: () => void }) {
 	}, []);
 
 	return (
-		<div ref={overlayRef} className={classes.overlay}>
+		<Stack
+			ref={overlayRef}
+			pos="fixed"
+			inset={0}
+			align="center"
+			justify="center"
+			gap={22}
+			bg="black"
+			style={{ zIndex: 9000 }}
+		>
 			<img src="/enyel-logo.png" alt="EnyelOS" className={classes.logo} />
 			<div className={classes.bar}>
 				<div className={classes.barFill} />
 			</div>
-			<p className={classes.hint}>click anywhere to skip</p>
-		</div>
+			<Text ff="monospace" fz={11} c="obsidian.3" opacity={0.6}>
+				click anywhere to skip
+			</Text>
+		</Stack>
 	);
 }

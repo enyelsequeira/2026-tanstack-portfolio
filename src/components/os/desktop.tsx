@@ -1,4 +1,5 @@
 import { useValue } from "@legendapp/state/react";
+import { Box, Center, Stack, Text, UnstyledButton } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { type ComponentType, useEffect, useState } from "react";
 import { AboutApp } from "./apps/about-app";
@@ -40,7 +41,7 @@ export function Desktop() {
 
 	if (power === "off") {
 		return (
-			<div className={classes.powerOff}>
+			<Center className={classes.powerOff}>
 				<button
 					type="button"
 					className={classes.powerOnButton}
@@ -54,7 +55,7 @@ export function Desktop() {
 				>
 					⏻
 				</button>
-			</div>
+			</Center>
 		);
 	}
 
@@ -96,35 +97,50 @@ function DesktopShell({
 	};
 
 	return (
-		<div className={classes.desktop}>
-			<div className={classes.wallpaper} aria-hidden="true">
+		<Box pos="fixed" inset={0} bg="obsidian.9" style={{ overflow: "hidden" }}>
+			<Box
+				pos="absolute"
+				inset={0}
+				aria-hidden="true"
+				style={{ overflow: "hidden" }}
+			>
 				<div className={classes.blobIndigo} />
 				<div className={classes.blobBlue} />
 				<div className={classes.grain} />
-			</div>
+			</Box>
 
 			<MenuBar onShutdown={onShutdown} />
 
-			<div className={classes.icons}>
+			<Stack
+				pos="absolute"
+				right={18}
+				gap={14}
+				style={{ top: "calc(var(--os-menubar-height) + 18px)", zIndex: 1 }}
+			>
 				{DESKTOP_ICON_IDS.map((id) => {
 					const app = APPS.find((a) => a.id === id);
 					if (!app) return null;
 					return (
-						<button
+						<UnstyledButton
 							key={app.id}
-							type="button"
 							className={classes.desktopIcon}
+							w={84}
+							px={4}
+							py={8}
+							c="obsidian.0"
 							onClick={() => openWindow(app.id)}
 							aria-label={`Open ${app.title}`}
 						>
-							<span className={classes.desktopIconGlyph}>
-								<app.icon size={30} stroke={1.5} />
-							</span>
-							<span className={classes.desktopIconLabel}>{app.title}</span>
-						</button>
+							<Stack gap={6} align="center">
+								<Box className={classes.desktopIconGlyph}>
+									<app.icon size={30} stroke={1.5} />
+								</Box>
+								<Text className={classes.desktopIconLabel}>{app.title}</Text>
+							</Stack>
+						</UnstyledButton>
 					);
 				})}
-			</div>
+			</Stack>
 
 			{order.map((appId) => {
 				const AppContent = APP_COMPONENTS[appId];
@@ -138,6 +154,6 @@ function DesktopShell({
 			<Dock />
 
 			{boot === "booting" && <BootScreen onDone={finishBoot} />}
-		</div>
+		</Box>
 	);
 }

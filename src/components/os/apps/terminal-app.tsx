@@ -1,3 +1,4 @@
+import { Box, Group } from "@mantine/core";
 import { useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import type { AppId } from "../types";
@@ -75,7 +76,10 @@ export function TerminalApp({
 			{history.map((entry) => (
 				<div key={entry.id}>
 					<div className={classes.line}>
-						<span className={classes.prompt}>enyel@os ~ %</span> {entry.command}
+						<Box component="span" c="var(--color-accent-secondary)">
+							enyel@os ~ %
+						</Box>{" "}
+						{entry.command}
 					</div>
 					{entry.output.map((line, index) => (
 						// biome-ignore lint/suspicious/noArrayIndexKey: output lines are static per entry
@@ -85,8 +89,16 @@ export function TerminalApp({
 					))}
 				</div>
 			))}
-			<form onSubmit={submit} className={classes.inputLine}>
-				<span className={classes.prompt}>enyel@os ~ %</span>
+			<Group
+				component="form"
+				onSubmit={submit}
+				gap={8}
+				align="stretch"
+				wrap="nowrap"
+			>
+				<Box component="span" c="var(--color-accent-secondary)">
+					enyel@os ~ %
+				</Box>
 				<input
 					ref={inputRef}
 					className={classes.input}
@@ -98,12 +110,21 @@ export function TerminalApp({
 					autoComplete="off"
 					aria-label="Terminal input"
 				/>
-			</form>
+			</Group>
 			{suggestions.length > 0 && (
-				<div className={classes.suggestions} aria-live="polite">
+				<Box
+					aria-live="polite"
+					mt={2}
+					fz={11.5}
+					opacity={0.75}
+					c="var(--color-text-muted)"
+				>
 					{suggestions.join("  ")}
-					<span className={classes.suggestionsHint}> — tab to complete</span>
-				</div>
+					<Box component="span" opacity={0.6} fs="italic">
+						{" "}
+						— tab to complete
+					</Box>
+				</Box>
 			)}
 		</div>
 	);

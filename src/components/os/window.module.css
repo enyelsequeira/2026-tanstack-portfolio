@@ -48,13 +48,7 @@
 	cursor: grabbing;
 }
 
-.trafficLights {
-	display: flex;
-	gap: 8px;
-	flex: 1;
-}
-
-.trafficLights button {
+.light {
 	width: 12px;
 	height: 12px;
 	border-radius: 50%;
@@ -64,7 +58,7 @@
 	transition: filter 120ms ease;
 }
 
-.trafficLights button:hover {
+.light:hover {
 	filter: brightness(1.25);
 }
 
@@ -78,18 +72,6 @@
 
 .lightZoom {
 	background: #28c840;
-}
-
-.title {
-	font-family: "DM Mono", monospace;
-	font-size: 12px;
-	font-weight: 500;
-	letter-spacing: 0.04em;
-	color: var(--color-text-muted);
-}
-
-.titleSpacer {
-	flex: 1;
 }
 
 .content {

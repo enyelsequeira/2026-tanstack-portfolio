@@ -1,4 +1,5 @@
 import { useValue } from "@legendapp/state/react";
+import { Group, Text, UnstyledButton } from "@mantine/core";
 import { useEffect, useState } from "react";
 import classes from "./menu-bar.module.css";
 import { getApp } from "./registry";
@@ -25,22 +26,43 @@ export function MenuBar({ onShutdown }: { onShutdown?: () => void }) {
 	}, []);
 
 	return (
-		<header className={classes.bar}>
-			<button
-				type="button"
+		<Group
+			component="header"
+			className={classes.bar}
+			h="var(--os-menubar-height)"
+			px={16}
+			gap={18}
+			align="center"
+			wrap="nowrap"
+			ff="monospace"
+			fz={12}
+			c="obsidian.0"
+		>
+			<UnstyledButton
 				className={classes.brand}
 				onClick={onShutdown}
 				aria-label="Shut down EnyelOS"
 				title="Shut down"
+				fw={500}
+				fz={12}
+				ff="monospace"
+				lts="0.04em"
 			>
 				⏻ EnyelOS
-			</button>
-			<span className={classes.appTitle}>
+			</UnstyledButton>
+			<Text ff="monospace" fz={12} c="obsidian.3">
 				{focused ? getApp(focused).title : "Desktop"}
-			</span>
-			<span className={classes.clock} suppressHydrationWarning>
+			</Text>
+			<Text
+				ff="monospace"
+				fz={12}
+				c="obsidian.3"
+				ml="auto"
+				style={{ fontVariantNumeric: "tabular-nums" }}
+				suppressHydrationWarning
+			>
 				{now}
-			</span>
-		</header>
+			</Text>
+		</Group>
 	);
 }
